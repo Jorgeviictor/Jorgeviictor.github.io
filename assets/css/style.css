@@ -679,6 +679,90 @@ section {
 }
 
 /* ============================================================
+   Projects — in-house products, no public link yet
+   ============================================================ */
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 700px) {
+  .projects-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+}
+
+.project-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), background-color 0.4s var(--ease);
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-dim);
+  background: var(--bg-elevated-2);
+}
+
+.project-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-card-head h3 {
+  font-size: 1.18rem;
+}
+
+.project-card p {
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+
+.status-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted-2);
+}
+
+.status-badge--dev {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
+.status-badge--dev::before {
+  background: var(--accent);
+}
+
+/* ============================================================
    Contact
    ============================================================ */
 
@@ -804,12 +888,6 @@ section {
   min-height: 120px;
 }
 
-.form-note {
-  font-size: 0.82rem;
-  color: var(--muted-2);
-  margin-top: 4px;
-}
-
 .form-status {
   margin-top: 16px;
   padding: 12px 16px;
@@ -832,6 +910,25 @@ section {
   background: oklch(0.55 0.18 10 / 0.12);
   color: oklch(0.78 0.13 10);
   border: 1px solid oklch(0.55 0.18 10 / 0.35);
+}
+
+/* Field-level error state — toggled via .field.is-invalid on submit */
+.field-error {
+  display: none;
+  font-size: 0.82rem;
+  color: oklch(0.78 0.13 10);
+  margin-top: 2px;
+}
+
+.field.is-invalid input,
+.field.is-invalid textarea,
+.field.is-invalid select {
+  border-color: oklch(0.55 0.18 10 / 0.7);
+  background: oklch(0.55 0.18 10 / 0.06);
+}
+
+.field.is-invalid .field-error {
+  display: block;
 }
 
 /* ============================================================
@@ -894,4 +991,102 @@ section {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ============================================================
+   Legal page (Política de Privacidade)
+   ============================================================ */
+
+.legal {
+  padding: 140px 0 96px;
+}
+
+.legal-wrap {
+  max-width: 760px;
+}
+
+.legal h1 {
+  font-size: clamp(2rem, 4.4vw, 2.8rem);
+  margin-top: 8px;
+}
+
+.legal > .wrap > .lead {
+  margin-top: 16px;
+  color: var(--muted-2);
+  font-size: 0.95rem;
+}
+
+.legal-body {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.legal-body h2 {
+  font-size: 1.2rem;
+  margin-top: 28px;
+}
+
+.legal-body p,
+.legal-body li {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.legal-body ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legal-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal-back {
+  margin-top: 56px;
+}
+
+/* ============================================================
+   404 page
+   ============================================================ */
+
+.error-404 {
+  padding: 160px 0;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.error-404-wrap {
+  max-width: 620px;
+}
+
+.error-404-code {
+  font-family: var(--font-mono);
+  font-size: clamp(3.5rem, 12vw, 6rem);
+  color: var(--accent);
+  line-height: 1;
+  margin: 8px 0 20px;
+}
+
+.error-404 h2 {
+  font-size: clamp(1.6rem, 3.6vw, 2.2rem);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.error-404 .lead {
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.error-404-actions {
+  margin-top: 36px;
 }
