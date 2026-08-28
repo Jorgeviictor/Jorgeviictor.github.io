@@ -730,6 +730,14 @@ section {
   line-height: 1.6;
 }
 
+.project-card-link {
+  align-self: flex-start;
+}
+
+.project-card-link:hover svg {
+  transform: translateX(3px);
+}
+
 .status-badge {
   display: inline-flex;
   align-items: center;
