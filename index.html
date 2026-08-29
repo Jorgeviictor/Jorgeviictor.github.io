@@ -24,14 +24,52 @@
   <meta property="og:image" content="https://tevox.co/assets/img/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="TEVOX — ecossistema de IA, nuvem, segurança e software sob uma única arquitetura." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="TEVOX — IA, Nuvem e Segurança em um único ecossistema" />
   <meta name="twitter:description" content="A TEVOX projeta e mantém IA, infraestrutura em nuvem, segurança e software sob uma única arquitetura, com um só time do primeiro modelo ao servidor em produção." />
   <meta name="twitter:image" content="https://tevox.co/assets/img/og-image.jpg" />
+  <meta name="twitter:image:alt" content="TEVOX — ecossistema de IA, nuvem, segurança e software sob uma única arquitetura." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://tevox.co/#organization",
+        "name": "TEVOX",
+        "url": "https://tevox.co/",
+        "logo": "https://tevox.co/assets/img/icon-512.png",
+        "image": "https://tevox.co/assets/img/og-image.jpg",
+        "description": "A TEVOX projeta e mantém IA, infraestrutura em nuvem, segurança e software sob uma única arquitetura, com um só time do primeiro modelo ao servidor em produção.",
+        "areaServed": "BR",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "url": "https://wa.me/5521995925328",
+          "availableLanguage": ["Portuguese"]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://tevox.co/#website",
+        "url": "https://tevox.co/",
+        "name": "TEVOX",
+        "inLanguage": "pt-BR",
+        "publisher": { "@id": "https://tevox.co/#organization" }
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  </noscript>
 
   <link rel="stylesheet" href="assets/css/style.css" />
 
@@ -45,6 +83,8 @@
   </script>
 </head>
 <body>
+
+  <canvas id="scene" aria-hidden="true"></canvas>
 
   <header class="site-header" id="header">
     <div class="wrap header-inner">
@@ -66,17 +106,17 @@
         <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
       </button>
     </div>
-
-    <nav class="mobile-nav" id="mobileNav" aria-label="Navegação móvel">
-      <a href="#sobre">Sobre</a>
-      <a href="#servicos">Serviços</a>
-      <a href="#projetos">Projetos</a>
-      <a href="#contato">Contato</a>
-      <a class="btn btn-primary" href="https://wa.me/5521995925328?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20TEVOX" target="_blank" rel="noopener">
-        Falar no WhatsApp
-      </a>
-    </nav>
   </header>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegação móvel">
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#contato">Contato</a>
+    <a class="btn btn-primary" href="https://wa.me/5521995925328?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20TEVOX" target="_blank" rel="noopener">
+      Falar no WhatsApp
+    </a>
+  </nav>
 
   <main id="top">
 
@@ -122,7 +162,16 @@
         <div class="hero-visual reveal">
           <div class="hero-visual-glow" aria-hidden="true"></div>
           <div class="hero-visual-frame">
-            <img src="assets/img/tevox-ecossistema.jpeg" alt="Identidade visual da TEVOX representando os quatro pilares do ecossistema: IA, Segurança, Cloud Infrastructure e Software" width="960" height="608" loading="eager" />
+            <picture>
+              <source type="image/webp"
+                srcset="assets/img/tevox-ecossistema-480.webp 480w, assets/img/tevox-ecossistema-720.webp 720w, assets/img/tevox-ecossistema-960.webp 960w"
+                sizes="(max-width: 507px) calc(100vw - 48px), 460px" />
+              <img src="assets/img/tevox-ecossistema-960.jpg"
+                srcset="assets/img/tevox-ecossistema-480.jpg 480w, assets/img/tevox-ecossistema-720.jpg 720w, assets/img/tevox-ecossistema-960.jpg 960w"
+                sizes="(max-width: 507px) calc(100vw - 48px), 460px"
+                alt="Identidade visual da TEVOX representando os quatro pilares do ecossistema: IA, Segurança, Cloud Infrastructure e Software"
+                width="960" height="608" loading="eager" decoding="async" fetchpriority="high" />
+            </picture>
           </div>
           <div class="hero-visual-tag">
             <strong>O Ecossistema Completo</strong>
@@ -355,5 +404,20 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script>
+    /* Load the constellation only where it will actually run — wide viewport,
+       motion allowed. Phones keep the static hero and never fetch Three.js. */
+    (function () {
+      var mm = window.matchMedia;
+      if (mm("(max-width: 720px)").matches || mm("(prefers-reduced-motion: reduce)").matches) return;
+      ["https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", "assets/js/scene.js"]
+        .forEach(function (src) {
+          var s = document.createElement("script");
+          s.src = src;
+          s.async = false;
+          document.head.appendChild(s);
+        });
+    })();
+  </script>
 </body>
 </html>
