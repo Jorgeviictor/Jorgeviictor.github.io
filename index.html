@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://formspree.io https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>TEVOX — IA, Nuvem e Segurança em um único ecossistema</title>
   <meta name="description" content="A TEVOX projeta e mantém IA, infraestrutura em nuvem, segurança e software sob uma única arquitetura, com um só time do primeiro modelo ao servidor em produção." />
   <link rel="canonical" href="https://tevox.co/" />
@@ -410,7 +412,7 @@
     (function () {
       var mm = window.matchMedia;
       if (mm("(max-width: 720px)").matches || mm("(prefers-reduced-motion: reduce)").matches) return;
-      ["https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", "assets/js/scene.js"]
+      ["assets/js/three.min.js", "assets/js/scene.js"]
         .forEach(function (src) {
           var s = document.createElement("script");
           s.src = src;
