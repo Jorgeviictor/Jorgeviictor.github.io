@@ -97,79 +97,127 @@
       <div class="wrap legal-wrap">
         <p class="eyebrow">Legal · Pega Visão</p>
         <h1>Pega Visão Privacy Policy</h1>
-        <p class="lead">Last updated: October 3, 2026. In case of any divergence between versions, the Portuguese version prevails.</p>
+        <p class="lead">Last updated: October 29, 2026. In case of any divergence between versions, the Portuguese version prevails.</p>
         <nav class="lang-switch" aria-label="Language"><a href="/pega-visao/privacidade" hreflang="pt-BR" lang="pt-BR" title="Português">PT</a><span aria-current="page" lang="en" title="English">EN</span><a href="/pega-visao/es/privacidad" hreflang="es" lang="es" title="Español">ES</a><a href="/pega-visao/zh/privacy" hreflang="zh-CN" lang="zh-CN" title="简体中文">中文</a></nav>
 
         <div class="legal-body">
-          <h2>1. Who is responsible</h2>
-          <p>The <strong>Pega Visão</strong> app is operated by <strong>JORGE VICTOR DA SILVA BRAGA PORTUGAL DESENVOLVIMENTO DE SOFTWARE LTDA</strong> ("TEVOX"), registered under CNPJ 68.512.157/0001-30, which is the controller of the data described here. Contact for questions and requests about your data: <strong><a href="mailto:suporte@tevox.co">suporte@tevox.co</a></strong>.</p>
+          <p>This policy explains which personal data the <strong>Pega Visão</strong> app processes, for what purpose, on which legal basis, with whom it is shared, how long it is kept and how you exercise your rights. It follows the Brazilian General Data Protection Law (LGPD, Law No. 13,709/2018) and the Brazilian Civil Rights Framework for the Internet (Marco Civil da Internet, Law No. 12,965/2014). The Portuguese version is the official one; this translation is provided for convenience and, in case of any difference, the Portuguese version prevails.</p>
 
-          <h2>2. What the app does</h2>
-          <p>Pega Visão helps people moving around Rio de Janeiro with information about areas (Free movement, Caution, Local guide required), real-time reports from other people, events, tourist spots and restaurants. It was built to also work without internet: the content is downloaded and stored on your device.</p>
-
-          <h2>3. Data we process and why</h2>
+          <h2>1. Who is responsible and how to contact us</h2>
           <ul>
-            <li><strong>Anonymous account.</strong> When you open the app, it automatically creates an anonymous account on our server. We do not ask for a name, email, phone number or password. The account is identified only by a random code, and we store with it the language, the creation date and an internal trust score (used to decide how your reports are published, see item 5). We also keep the history of that score: each change records the amount, the reason and the code of the report that caused it.</li>
-            <li><strong>Location.</strong> See item 4.</li>
-            <li><strong>Safety reports.</strong> See item 5.</li>
-            <li><strong>Purchases (Travel Pass).</strong> See item 6.</li>
-            <li><strong>Data stored on your device.</strong> Downloaded content (areas, reports, events, places, itineraries), reports not yet sent and the state of your Pass are kept in an encrypted local database (SQLCipher); the encryption key is kept in the system's secure storage (Keychain on iOS, Keystore on Android). Some simple home-screen preferences are kept in the app's local storage. This data is not sent to us, except what is described in items 4 to 6.</li>
-          </ul>
-          <p>As far as the code shows, the app does <strong>not</strong> contain third-party advertising, usage analytics or crash-reporting SDKs, and we do not sell or rent data. [CONFIRMAR before each store submission, if any SDK of this kind is added.]</p>
-
-          <h2>4. Location</h2>
-          <ul>
-            <li>The app only uses location <strong>while it is open</strong> (foreground). It does not request or use background location; on Android the background location permission is explicitly removed.</li>
-            <li>Location is requested when you tap to center the map on yourself and when you are about to submit a report. If you deny the permission, the app keeps working, without those two features.</li>
-            <li>To center the map, your position is used <strong>only on your device</strong>.</li>
-            <li>Your position only leaves the device <strong>when you submit a safety report</strong>: in that case we send the coordinates (latitude and longitude) captured at that moment. The app's content update sends the server only the name of the content package (for example, "tourist circuit" or "Full Rio"), not your position.</li>
-            <li>The map is displayed by Google Maps (see item 7), which may process technical data from your device according to Google's policy.</li>
+            <li><strong>Controller:</strong> JORGE VICTOR DA SILVA BRAGA PORTUGAL DESENVOLVIMENTO DE SOFTWARE LTDA, trading as <strong>TEVOX</strong>, a Brazilian micro-enterprise registered under CNPJ 68.512.157/0001-30, with registered office at Rua Visconde do Rio Branco, 1488, Conjunto 909, 9º andar, Condomínio Universe Life Square, Bloco Comercial, Centro, Curitiba/PR, CEP 80420-210, Brazil. TEVOX is a digital company: support is provided through the electronic channels below.</li>
+            <li><strong>Data protection officer ("encarregado", art. 41 LGPD):</strong> Jorge Victor da Silva Braga Portugal. Contact: <strong><a href="mailto:suporte@tevox.co?subject=Privacy">suporte@tevox.co</a></strong> (use the subject "Privacy"). The officer receives requests and complaints from data subjects and communications from the Brazilian Data Protection Authority (ANPD).</li>
           </ul>
 
-          <h2>5. Safety reports</h2>
-          <p>You can report an incident in one of four categories: risk of confrontation, police action, blocked road or street event. Each report stores: the category, the coordinates of the location, the code of your anonymous account (as author), the status of the report, the number of confirmations and rejections from other people, and the creation and expiration dates. There is no free-text field, photo or audio.</p>
-          <p>Reports serve to alert other people and <strong>expire automatically</strong> (from 3 to 12 hours, depending on the category); once expired, they stop appearing on the map. Reports not yet sent stay in a queue on your device, with the capture time, and are sent when there is a connection. The server decides whether the report is published immediately or stays pending, based on the account's trust score. Published reports are shown to other users without your account code.</p>
-          <p>If you delete your data (see item 9), the reports you have already published are <strong>not deleted</strong>: they are <strong>anonymized</strong>, meaning they lose the link to your account but keep their location, because they serve other people's safety. They stay ownerless until they expire and are removed (see item 8).</p>
-
-          <h2>6. Purchases and Travel Pass</h2>
+          <h2>2. Summary</h2>
           <ul>
-            <li>Payment is handled entirely by <strong>Google Play</strong> or the <strong>App Store</strong>. We do not receive or store card data, payment name or billing address.</li>
-            <li>To unlock the Pass, the app sends our server the purchase receipt provided by the store (on Google Play, the purchase token; on the App Store, the transaction identifier). The server validates this receipt directly with the store.</li>
-            <li>What we store: the code of your anonymous account, the originating store, the subscription and transaction identifiers in the store, and the date the paid period ends. The store also notifies us of renewals, cancellations and refunds, to keep the Pass up to date.</li>
-            <li>Because the account is anonymous, the Pass is tied to it and to your device/store account; use "Restore purchase" on the Pass screen when changing devices. The Pass is a monthly subscription with automatic renewal, charged by the store; you can cancel at any time in your Google Play or App Store subscriptions, and access continues until the end of the period already paid.</li>
+            <li>The app creates an <strong>anonymous account</strong>: we do not ask for your name, email, phone number, ID document or password.</li>
+            <li>Your <strong>location</strong> only leaves the device when <strong>you send a safety report</strong>.</li>
+            <li>Reports <strong>expire within a few hours</strong> and are <strong>deleted 30 days after</strong> they expire.</li>
+            <li>The app has <strong>no advertising</strong>, uses no third-party usage analytics or crash reporting tools, and <strong>we do not sell data</strong>.</li>
+            <li>You can delete everything from within the app, under <strong>Profile &gt; Delete my data</strong>.</li>
           </ul>
 
-          <h2>7. Who we share data with</h2>
+          <h2>3. What the app does</h2>
+          <p>Pega Visão helps people get around the state of Rio de Janeiro with information about areas (Free circulation, Caution, Local guide required), recent reports from other people, events, tourist attractions, restaurants and itineraries. It was designed to work offline as well: content is downloaded and stored on your device.</p>
+
+          <h2>4. Data we process</h2>
           <ul>
-            <li><strong>Supabase</strong> — hosts the database, anonymous authentication and the app's server functions. It receives the data described in items 3 to 6. The project's database is hosted in the São Paulo, Brazil region (sa-east-1). Server functions may run on Supabase's global edge network, and Google (Translation, for event content; Google Play and the App Store, for purchases) processes data under its own policies.</li>
-            <li><strong>Google (Google Maps and Google Play)</strong> — Google Maps draws the map in the app; Google Play processes payments and subscription notices on Android.</li>
-            <li><strong>Apple (App Store)</strong> — processes payments and subscription notices on iOS.</li>
-            <li><strong>Google Cloud Translation</strong> — used on our server to translate <em>only event content</em> (title and description) obtained from a public Rio cultural agenda source. No user data, location or report is sent to this service.</li>
+            <li><strong>Anonymous account.</strong> When you open the app for the first time, it automatically creates an anonymous account on our server, identified by a random code. Stored with it are: the creation date and the date of last access, the trust score and its level, the history of that score (each change records the variation, the reason and, where applicable, the code of the related report) and a language field that the app does not currently fill in (it keeps the default value).</li>
+            <li><strong>Access session.</strong> The authentication service stores, with your account's session, the IP address and the technical identification of the app and system used (user-agent), as well as the session's start and renewal dates.</li>
+            <li><strong>Safety reports</strong> (category, coordinates and dates): see section 6.</li>
+            <li><strong>Travel Pass purchases</strong> (receipts and validity): see section 7.</li>
+            <li><strong>Content updates.</strong> To download areas, reports, events, places and itineraries, the app sends the server only the name of the content region you chose to download and the date of the last update, <strong>never your position</strong>.</li>
+            <li><strong>Messages you send us.</strong> If you write to our email address, we process your email address and the content of your message in order to reply.</li>
+            <li><strong>Data stored only on your device.</strong> Downloaded content, reports not yet sent (with the time of capture) and the status of your Pass are kept in an encrypted local database (SQLCipher), with the key in the system's secure storage (Keychain on iOS, Keystore on Android). The anonymous account session, some home screen preferences and photos already viewed (image cache) are also kept on the device. This data is not sent to us, except as described in this section.</li>
           </ul>
-          <p><strong>Google Analytics (website only).</strong> The tevox.co website, where this policy is published, uses Google Analytics to measure page usage. This applies <strong>only to the website</strong>; the Pega Visão app does not use Google Analytics or any other usage-analytics SDK. [CONFIRMAR the website cookie and consent wording.]</p>
-          <p>We do not sell your data. We may disclose it if required by law or court order. [CONFIRMAR whether there are other processors, such as an email or support service.]</p>
+          <p><strong>What we do not process.</strong> The app does not collect names, email addresses, phone numbers, documents, contacts, photos, audio, free text or advertising identifiers, and does not process sensitive personal data (such as health, religion, racial origin or biometrics). The app contains no third-party advertising, usage analytics or crash reporting kits.</p>
 
-          <h2>8. How long we keep data</h2>
+          <h2>5. Location</h2>
           <ul>
-            <li><strong>Reports:</strong> stop being displayed when they expire (3 to 12 hours) and are <strong>permanently deleted from the database 30 days after</strong> they expire. Reports from people who deleted their data stay anonymized until that deadline.</li>
-            <li><strong>Anonymous account, trust score and Pass:</strong> for as long as the account exists, or until you delete your data in the app (item 9). [CONFIRMAR the policy for deleting inactive accounts.]</li>
-            <li><strong>Purchase records:</strong> kept for as long as necessary to validate the Pass, avoid duplicate charges and comply with legal obligations. [CONFIRMAR deadline.]</li>
-            <li><strong>On the device:</strong> until you uninstall the app or clear its data.</li>
+            <li>The app only uses location <strong>while it is open</strong> (foreground). It does not request or use background location; on Android, that permission is explicitly removed.</li>
+            <li>Location is requested when you tap to center the map on yourself and when you are about to make a report. If you deny permission, the app keeps working, without those two features. You can withdraw the permission at any time in your device settings.</li>
+            <li>To show you on the map, your position is used <strong>only on the device</strong>; we do not receive it.</li>
+            <li>Your position only reaches us <strong>when you send a report</strong>: we send the coordinates (latitude and longitude) captured at that moment.</li>
+            <li>The map is drawn by the Google Maps SDK, which runs on the device and communicates directly with Google (see section 9).</li>
+            <li>When you tap "Open in maps" on a place or event, the app opens Google Maps or Apple Maps with the coordinates <strong>of the place</strong>, not yours.</li>
           </ul>
 
-          <h2>9. Your rights (LGPD)</h2>
-          <p>Under the Brazilian General Data Protection Law (Law No. 13,709/2018), you may request: confirmation of processing and access to the data; correction; anonymization, blocking or deletion of unnecessary data; portability; information about whom we share data with; and withdrawal of consent, when it is the legal basis. You may also deny or withdraw the location permission in your device settings at any time.</p>
-          <p><strong>Delete your data in the app.</strong> Under <strong>Profile &gt; Delete my data</strong> you delete, at once and without contacting us: your account, the trust score and its history, the Pass, the purchases recorded on our server and the data stored on your device. The reports you published are not deleted: they stay anonymized and ownerless until they expire, and are removed 30 days later (items 5 and 8). <strong>Deleting does not cancel your store subscription</strong>: to stop being charged, cancel in your Google Play or App Store subscriptions.</p>
-          <p><strong>Alternative by email.</strong> If you prefer, or cannot use the app, write to <strong><a href="mailto:suporte@tevox.co">suporte@tevox.co</a></strong> asking for deletion or exercising any other right above. You may also file a complaint with the Brazilian National Data Protection Authority (ANPD).</p>
+          <h2>6. Safety reports and trust score</h2>
+          <p>You can report an occurrence in one of four categories: risk or confrontation, police action, blocked road or street event. Each report stores: the category, the coordinates, your account code (as author), the report's status, confirmation and rejection counters (the app does not yet offer a way to confirm or reject reports, so they stay at zero), the creation date and the expiry date. There is no free-text field, photo or audio.</p>
+          <p>Reports <strong>expire automatically</strong> (3 hours for risk or confrontation and police action, 6 hours for blocked road and 12 hours for street event). Published reports are shown to other people <strong>without your account code</strong>, only with category, place and times.</p>
+          <p><strong>Automated decision.</strong> When a report arrives, the server decides on its own, without human intervention, whether it is published immediately or stays pending, according to the account's trust level:</p>
+          <ul>
+            <li>the score is the sum of the entries in the account's history; every account starts at zero points;</li>
+            <li>levels: initial (fewer than 50 points), intermediate (50 to 199) and advanced (200 or more);</li>
+            <li>a report from an account at the advanced level is published immediately; a report from an account at the other levels stays <strong>pending</strong>, is not shown to other people and expires in the normal period. There is currently no human review of pending reports;</li>
+            <li>the score is not changed automatically by use of the app; any change is recorded in the history, with the reason.</li>
+          </ul>
+          <p>You have the right to request a <strong>review</strong> of this decision and to receive information about the criteria used (art. 20 LGPD). Write to the email in section 1 describing a report you made (category, date, time and approximate place), so that we can find your account; the review is carried out by a person.</p>
 
-          <h2>10. Children and teenagers</h2>
-          <p>Pega Visão is not directed at children. [CONFIRMAR the age range declared in the stores and the preferred legal wording, e.g.: "we do not knowingly collect data from children under 13" or the treatment of teenagers under the LGPD, art. 14.]</p>
+          <h2>7. Purchases and Travel Pass</h2>
+          <ul>
+            <li>Payment is handled entirely by <strong>Google Play</strong> or the <strong>App Store</strong>. We do not receive or store card details, payment name or billing address.</li>
+            <li>To unlock the Pass, the app sends our server the purchase receipt provided by the store (on Google Play, the purchase token; on the App Store, the transaction identifier). The server checks that receipt directly with the store.</li>
+            <li>We store: your anonymous account code, the store of origin, the subscription and transaction identifiers in the store, the processing date and the date on which the paid period ends. The store also notifies us of renewals, cancellations and refunds, to keep the Pass up to date.</li>
+            <li>The Pass is a monthly subscription with automatic renewal, charged by the store. You can cancel at any time in your Google Play or App Store subscriptions, and access continues until the end of the period already paid. When changing devices, use "Restore purchase" on the Pass screen.</li>
+          </ul>
 
-          <h2>11. Security</h2>
-          <p>We adopt technical measures such as the encrypted local database, per-account access control on the server (each person can only read their own Pass) and writing of reports and purchases only through server functions. No system is completely immune to failures.</p>
+          <h2>8. What we use data for and on which legal basis</h2>
+          <ul>
+            <li><strong>Creating and maintaining the anonymous account, authenticating access and delivering the app's content:</strong> performance of the contract with you, i.e. the Terms of Use (art. 7, V, LGPD).</li>
+            <li><strong>Receiving, publishing and expiring reports, with the location sent:</strong> performance of the contract (art. 7, V), because reporting and viewing reports is a feature you choose to use.</li>
+            <li><strong>Trust score, publication decision and keeping reports for 30 days after they expire</strong> (to investigate abuse and false reports): legitimate interest of TEVOX and of app users in reliable information (art. 7, IX, and art. 10), with the safeguards described in section 6, including the right to review.</li>
+            <li><strong>Keeping anonymized reports after you delete your data:</strong> they are no longer your personal data (art. 12 LGPD); they serve other people's safety until they are deleted.</li>
+            <li><strong>Validating purchases and keeping the Pass up to date:</strong> performance of the contract (art. 7, V).</li>
+            <li><strong>Access session (IP and user-agent):</strong> performance of the contract and account security (art. 7, V and IX).</li>
+            <li><strong>Replying to messages and data subject requests:</strong> compliance with a legal obligation (art. 7, II, and art. 18) and performance of the contract (art. 7, V); keeping messages for defence in any proceedings: regular exercise of rights (art. 7, VI).</li>
+            <li><strong>Complying with a court order or a request from a competent authority:</strong> compliance with a legal obligation (art. 7, II).</li>
+          </ul>
+          <p>We do not rely on consent as a basis for the app, so there is no consent to withdraw; at any time you can withdraw the location permission, stop reporting or delete your data.</p>
 
-          <h2>12. Changes to this policy</h2>
-          <p>We may update this document to reflect changes in the app or in the law. The date at the top indicates the most recent version; relevant changes will be communicated in the app or in the stores.</p>
+          <h2>9. Who we share data with and international transfer</h2>
+          <p>We do not sell or rent data. We share it only with the providers below, to the extent necessary for the app to work:</p>
+          <ul>
+            <li><strong>Supabase, Inc. (United States)</strong> — processor that hosts the database, anonymous authentication, photo files and server functions. The database is located in the <strong>São Paulo, Brazil</strong> region (sa-east-1). Server functions run in the Supabase region closest to whoever makes the request, which may be outside Brazil (for example, if you use the app abroad), and traffic passes through Supabase's content delivery network (CDN). It receives the data in sections 4 to 7.</li>
+            <li><strong>Google LLC (United States)</strong> — (a) <em>Google Play</em>: processes payment and subscription notifications on Android; our server queries the Google Play API to validate the receipt; (b) <em>Google Maps SDK</em>: draws the map and receives technical data directly from the device (such as IP address and device information) and may process location when the map's "my location" function is on, under Google's own privacy policy; (c) <em>Google Workspace</em>: hosts our email, and therefore the messages you send us; (d) <em>Google Cloud Translation</em>: used on the server to translate only event texts obtained from public calendars — no user data, location or report is sent to this service.</li>
+            <li><strong>Apple Inc. (United States)</strong> — App Store: processes payment and subscription notifications on iOS; our server queries the App Store API to validate the receipt.</li>
+            <li><strong>Authorities</strong> — only when required by law or by a court order.</li>
+          </ul>
+          <p><strong>International transfer.</strong> Some of these providers are located, or process data, outside Brazil, mainly in the United States. The transfer to Supabase, Apple and Google (Play and Workspace) takes place because it is necessary to perform the contract with you and to answer your requests (art. 33, IX, combined with art. 7, II and V, LGPD). The Google Maps SDK collects data directly from your device, which the ANPD treats as international collection and not as a transfer (art. 6 of the Regulation approved by ANPD Resolution CD/ANPD No. 19/2024); in that case Google's rules and privacy policy apply. Apple and Google process payment data as independent controllers, under the store policies.</p>
+          <p>External links (an event's official website, a partner's "Buy / Book") open outside the app; the website visited processes your data under its own policy. The app does not add any identifier of yours to these links.</p>
+
+          <h2>10. How long we keep data</h2>
+          <ul>
+            <li><strong>Reports:</strong> stop being shown when they expire (3 to 12 hours) and are <strong>deleted from the database 30 days after</strong> they expire. Reports from people who deleted their data stay anonymized until that deadline.</li>
+            <li><strong>Anonymous account, access session, score and history, Pass and purchase records:</strong> while the account exists. All of this is deleted when you use "Delete my data". There is no automatic deletion of unused accounts: if you are going to uninstall the app, use "Delete my data" first (uninstalling only deletes what is on the device).</li>
+            <li><strong>Technical infrastructure records</strong> (requests to the server, with IP address and time): kept by Supabase for a few days, for operation and diagnostics.</li>
+            <li><strong>Messages sent to our email:</strong> up to 5 years after the last contact, the period during which they may be needed to defend rights (art. 27 of the Brazilian Consumer Protection Code).</li>
+            <li><strong>On the device:</strong> until you delete your data in the app, clear the app's data in settings or uninstall it. Reports not yet sent leave the queue as soon as they are sent.</li>
+          </ul>
+          <p>The stores (Google Play and App Store) keep purchase records for the periods set in their own policies.</p>
+
+          <h2>11. Your rights and how to exercise them</h2>
+          <p>Under the LGPD (art. 18), you can request: confirmation that we process your data; access to the data; correction; anonymization, blocking or deletion of unnecessary or excessive data or data processed in breach of the law; portability; deletion; information about who we share data with; and review of automated decisions (art. 20). You can also object to processing based on legitimate interest when it breaches the law.</p>
+          <p><strong>Delete your data in the app.</strong> Under <strong>Profile &gt; Delete my data</strong> you delete, at once and without having to contact us: your account, the access session, the trust score and its history, the Pass, the purchases recorded on our server and the data stored on the device. Reports you have published are not deleted at that moment: they lose the link to your account, remain anonymous until they expire and are deleted 30 days later (sections 6 and 10). <strong>Deleting your data does not cancel the store subscription</strong>: to stop being charged, cancel in your Google Play or App Store subscriptions.</p>
+          <p><strong>By email.</strong> For any other request, write to <strong><a href="mailto:suporte@tevox.co?subject=Privacy">suporte@tevox.co</a></strong>. Because the account is anonymous, we cannot tell from your email alone which account is yours; to find it, describe a report you made (category, date, time and approximate place) or your Pass purchase (store and date). We do not ask for documents or other data just for this. We reply within 15 days; if we cannot fulfil the request, we explain why (art. 18, § 4, and art. 19 LGPD).</p>
+          <p>You can also file a complaint with the <strong>Brazilian Data Protection Authority (ANPD)</strong>, at <a href="https://www.gov.br/anpd" rel="noopener">www.gov.br/anpd</a>.</p>
+
+          <h2>12. Children and adolescents</h2>
+          <p>Pega Visão is intended for people aged <strong>18 or over</strong> and is not directed at children or adolescents. Because we do not ask for any identification data, we do not know the age of users and we do not knowingly collect data from people under 18.</p>
+          <p>For parents and guardians: the app has no advertising, builds no profile for commercial purposes, has no messages or contact between users, has no free-text field, photo or audio, and only sends location when the person makes a report, which is shown without identification. If a child or adolescent is using the app, the parent or guardian can delete everything under <strong>Profile &gt; Delete my data</strong> on the device itself or write to the email in section 1; when we learn that an account belongs to a child or adolescent, we delete the data we are able to link to it.</p>
+
+          <h2>13. Security</h2>
+          <p>We adopt technical and administrative measures to protect data (art. 46 LGPD): traffic only over encrypted connections (HTTPS/TLS); an encrypted local database; per-account access control on the server (each person can only read their own Pass and their own pending reports); reports and purchases recorded only by server functions; store keys kept in the database's vault; and administrative access restricted to the person responsible for TEVOX. No system is completely immune to failure.</p>
+
+          <h2>14. Security incidents</h2>
+          <p>If a security incident occurs that may bring relevant risk or harm to you, we will notify the ANPD and the affected people within the period and in the manner set by regulation (art. 48 LGPD and ANPD Resolution CD/ANPD No. 15/2024), stating what happened, which data was affected, the risks and what we are doing. Because we do not have your email or phone number, the notice will be published on this page and on the app's store page and, where possible, within the app.</p>
+
+          <h2>15. This website (tevox.co)</h2>
+          <p>This policy is published on the tevox.co website, which is hosted by GitHub Pages (GitHub, Inc., United States), loads fonts from Google Fonts and uses <strong>Google Analytics</strong> to measure page visits, with measurement cookies. In these cases your browser communicates directly with those services, which receive your IP address and technical browser data. We use Analytics on the basis of our legitimate interest in understanding how the website is used (art. 7, IX); you can block cookies in your browser or use the Google Analytics opt-out browser add-on. This applies <strong>only to the website</strong>: the Pega Visão app does not use Google Analytics or any other usage analytics tool.</p>
+
+          <h2>16. Changes to this policy</h2>
+          <p>We may update this policy to reflect changes in the app or in the law. The date at the top indicates the version in force. Relevant changes will be announced on this page and on the app's store page before they take effect; if a change requires a new legal basis or consent, we will ask for it in the app.</p>
         </div>
 
         <a class="btn btn-ghost legal-back" href="/index.html#top">
