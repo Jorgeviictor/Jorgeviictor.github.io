@@ -125,6 +125,7 @@
           <ul>
             <li><strong>Anonymous account.</strong> When you open the app for the first time, it automatically creates an anonymous account on our server, identified by a random code. Stored with it are: the creation date and the date of last access, the trust score and its level, the history of that score (each change records the variation, the reason and, where applicable, the code of the related report) and a language field that the app does not currently fill in (it keeps the default value).</li>
             <li><strong>Access session.</strong> The authentication service stores, with your account's session, the IP address and the technical identification of the app and system used (user-agent), as well as the session's start and renewal dates.</li>
+            <li><strong>Access logs.</strong> Each time the app uses one of our server functions (syncing content, sending a report, validating a purchase or deleting the account), the server records the originating IP address (with the forwarding chain reported by the network), the date and time (in UTC), which function was used and your anonymous account code. This log does not keep the content of the request, your location or the user-agent.</li>
             <li><strong>Safety reports</strong> (category, coordinates and dates): see section 6.</li>
             <li><strong>Travel Pass purchases</strong> (receipts and validity): see section 7.</li>
             <li><strong>Content updates.</strong> To download areas, reports, events, places and itineraries, the app sends the server only the name of the content region you chose to download and the date of the last update, <strong>never your position</strong>.</li>
@@ -172,6 +173,7 @@
             <li><strong>Validating purchases and keeping the Pass up to date:</strong> performance of the contract (art. 7, V).</li>
             <li><strong>Access session (IP and user-agent):</strong> performance of the contract and account security (art. 7, V and IX).</li>
             <li><strong>Replying to messages and data subject requests:</strong> compliance with a legal obligation (art. 7, II, and art. 18) and performance of the contract (art. 7, V); keeping messages for defence in any proceedings: regular exercise of rights (art. 7, VI).</li>
+            <li><strong>Access logs (IP, date and time):</strong> compliance with a legal obligation (art. 7, II, of the LGPD), because the Brazilian Civil Rights Framework for the Internet (Marco Civil da Internet, Law 12,965/2014, art. 15) requires them to be kept for 6 months.</li>
             <li><strong>Complying with a court order or a request from a competent authority:</strong> compliance with a legal obligation (art. 7, II).</li>
           </ul>
           <p>We do not rely on consent as a basis for the app, so there is no consent to withdraw; at any time you can withdraw the location permission, stop reporting or delete your data.</p>
@@ -191,6 +193,7 @@
           <ul>
             <li><strong>Reports:</strong> stop being shown when they expire (3 to 12 hours) and are <strong>deleted from the database 30 days after</strong> they expire. Reports from people who deleted their data stay anonymized until that deadline.</li>
             <li><strong>Anonymous account, access session, score and history, Pass and purchase records:</strong> while the account exists. All of this is deleted when you use "Delete my data". There is no automatic deletion of unused accounts: if you are going to uninstall the app, use "Delete my data" first (uninstalling only deletes what is on the device).</li>
+            <li><strong>Access logs</strong> (IP address, date and time of each use of the server functions, with the account code): kept for <strong>6 months</strong>, confidentially, in a restricted area of the database, and deleted automatically afterwards. They are only disclosed under a court order (Marco Civil da Internet, arts. 10, 15 and 22; LGPD, art. 7, II). "Delete my data" does not erase them before that period, because keeping them is a legal obligation (art. 16, I, of the LGPD).</li>
             <li><strong>Technical infrastructure records</strong> (requests to the server, with IP address and time): kept by Supabase for a few days, for operation and diagnostics.</li>
             <li><strong>Messages sent to our email:</strong> up to 5 years after the last contact, the period during which they may be needed to defend rights (art. 27 of the Brazilian Consumer Protection Code).</li>
             <li><strong>On the device:</strong> until you delete your data in the app, clear the app's data in settings or uninstall it. Reports not yet sent leave the queue as soon as they are sent.</li>

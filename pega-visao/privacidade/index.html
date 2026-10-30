@@ -125,6 +125,7 @@
           <ul>
             <li><strong>Conta anônima.</strong> Ao abrir o app pela primeira vez, ele cria automaticamente uma conta anônima no nosso servidor, identificada por um código aleatório. Junto dela ficam: a data de criação e do último acesso, a pontuação de confiança e o nível dela, o histórico dessa pontuação (cada alteração registra a variação, o motivo e, se houver, o código do relato relacionado) e um campo de idioma que o app hoje não preenche (fica com o valor padrão).</li>
             <li><strong>Sessão de acesso.</strong> O serviço de autenticação guarda, junto da sessão da sua conta, o endereço IP e a identificação técnica do aplicativo e do sistema (user-agent) usados, além das datas de início e de renovação da sessão.</li>
+            <li><strong>Registros de acesso.</strong> Cada vez que o app usa uma função do nosso servidor (sincronizar o conteúdo, enviar um relato, validar uma compra ou apagar a conta), o servidor registra o endereço IP de origem (com a cadeia de encaminhamento informada pela rede), a data e a hora (em UTC), qual função foi usada e o código da sua conta anônima. Esse registro não guarda o conteúdo do pedido, a localização nem o user-agent.</li>
             <li><strong>Relatos de segurança</strong> (categoria, coordenadas e datas): ver item 6.</li>
             <li><strong>Compras do Passe de Viagem</strong> (comprovantes e validade): ver item 7.</li>
             <li><strong>Atualização de conteúdo.</strong> Para baixar áreas, relatos, eventos, lugares e roteiros, o app envia ao servidor apenas o nome da região de conteúdo que você escolheu baixar e a data da última atualização, <strong>nunca a sua posição</strong>.</li>
@@ -172,6 +173,7 @@
             <li><strong>Validar compras e manter o Passe atualizado:</strong> execução do contrato (art. 7º, V).</li>
             <li><strong>Sessão de acesso (IP e user-agent):</strong> execução do contrato e segurança da conta (art. 7º, V e IX).</li>
             <li><strong>Responder mensagens e pedidos de titulares:</strong> cumprimento de obrigação legal (art. 7º, II, e art. 18) e execução do contrato (art. 7º, V); guarda das mensagens para defesa em eventual processo: exercício regular de direitos (art. 7º, VI).</li>
+            <li><strong>Registros de acesso (IP, data e hora):</strong> cumprimento de obrigação legal (art. 7º, II, da LGPD), porque o Marco Civil da Internet (Lei nº 12.965/2014, art. 15) obriga a guardá-los por 6 meses.</li>
             <li><strong>Atender ordem judicial ou requisição de autoridade competente:</strong> cumprimento de obrigação legal (art. 7º, II).</li>
           </ul>
           <p>Não usamos consentimento como base para o app, então não há consentimento a revogar; você pode, a qualquer momento, retirar a permissão de localização, deixar de relatar ou apagar os seus dados.</p>
@@ -191,6 +193,7 @@
           <ul>
             <li><strong>Relatos:</strong> deixam de ser exibidos ao expirar (3 a 12 horas) e são <strong>apagados do banco 30 dias depois</strong> de expirarem. Relatos de quem apagou os dados ficam anonimizados até esse prazo.</li>
             <li><strong>Conta anônima, sessão de acesso, pontuação e histórico, Passe e registros de compra:</strong> enquanto a conta existir. Tudo isso é apagado quando você usa "Apagar meus dados". Não há exclusão automática de contas sem uso: se você for desinstalar o app, use antes "Apagar meus dados" (desinstalar apaga só o que está no aparelho).</li>
+            <li><strong>Registros de acesso</strong> (IP, data e hora de cada uso das funções do servidor, com o código da conta): guardados por <strong>6 meses</strong>, sob sigilo, em área restrita do banco de dados, e apagados automaticamente depois disso. Só são fornecidos mediante ordem judicial (Marco Civil da Internet, arts. 10, 15 e 22; LGPD, art. 7º, II). "Apagar meus dados" não os apaga antes desse prazo, porque a guarda é obrigação legal (art. 16, I, da LGPD).</li>
             <li><strong>Registros técnicos da infraestrutura</strong> (requisições ao servidor, com IP e horário): guardados pelo Supabase por poucos dias, para operação e diagnóstico.</li>
             <li><strong>Mensagens enviadas ao nosso e-mail:</strong> até 5 anos depois do último contato, prazo em que podem ser necessárias para a defesa de direitos (art. 27 do Código de Defesa do Consumidor).</li>
             <li><strong>No aparelho:</strong> até você apagar os dados no app, limpar os dados do app nos ajustes ou desinstalá-lo. Relatos ainda não enviados saem da fila assim que são enviados.</li>
