@@ -57,6 +57,41 @@
     });
   }
 
+  // Section rail — marks the section crossing mid-screen and fills the track
+  // with page progress. One rAF per scroll burst; display:none below 1100px
+  // costs nothing beyond the listener.
+  var rail = document.getElementById("rail");
+  if (rail) {
+    var railFill = document.getElementById("railFill");
+    var railItems = Array.prototype.slice.call(rail.querySelectorAll(".rail-item"));
+    var railTargets = railItems.map(function (item) {
+      var id = item.getAttribute("data-section");
+      return id === "top" ? document.querySelector(".hero") : document.getElementById(id);
+    });
+    var railQueued = false;
+    var updateRail = function () {
+      railQueued = false;
+      var mid = window.innerHeight / 2, active = 0;
+      railTargets.forEach(function (el, i) {
+        if (el && el.getBoundingClientRect().top <= mid) active = i;
+      });
+      railItems.forEach(function (item, i) {
+        if (i === active) item.setAttribute("aria-current", "true");
+        else item.removeAttribute("aria-current");
+      });
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      railFill.style.transform = "scaleY(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+    };
+    var queueRail = function () {
+      if (railQueued) return;
+      railQueued = true;
+      requestAnimationFrame(updateRail);
+    };
+    document.addEventListener("scroll", queueRail, { passive: true });
+    window.addEventListener("resize", queueRail, { passive: true });
+    updateRail();
+  }
+
   // Contact form — client-side validation, then AJAX submit to Formspree.
   var form = document.getElementById("contactForm");
   var status = document.getElementById("formStatus");

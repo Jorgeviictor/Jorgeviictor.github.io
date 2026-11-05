@@ -245,8 +245,20 @@
 
   function hideBanner(silent) {
     if (!banner) return;
-    banner.parentNode.removeChild(banner);
+    var old = banner;
     banner = null;
+    // fechar pelo usuário: anima a saída (200ms, ver consentimento.css) e só
+    // então remove; trocar de aviso (silent) ou movimento reduzido remove na hora
+    if (!silent && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      old.classList.add("is-leaving");
+      old.setAttribute("aria-hidden", "true");
+      old.inert = true;
+      setTimeout(function () {
+        if (old.parentNode) old.parentNode.removeChild(old);
+      }, 200);
+    } else {
+      old.parentNode.removeChild(old);
+    }
     document.documentElement.classList.remove("has-consent-banner");
     if (!silent && lastTrigger && document.contains(lastTrigger)) {
       lastTrigger.focus();

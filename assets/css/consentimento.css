@@ -26,11 +26,20 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .consent {
-    animation: consent-in 0.4s var(--ease, ease-out) both;
+    animation: consent-in 0.3s var(--ease, ease-out) both;
+  }
+  /* sai pelo mesmo caminho por onde entrou (classe posta por consentimento.js) */
+  .consent.is-leaving {
+    animation: consent-out 0.2s var(--ease, ease-out) both;
+    pointer-events: none;
   }
   @keyframes consent-in {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: none; }
+  }
+  @keyframes consent-out {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: translateY(16px); }
   }
 }
 
