@@ -680,12 +680,15 @@
 
   /* Hill outlines only: Dois Irmãos, Corcovado (no statue) and Sugarloaf with Urca */
   var HILLS = {
+    back: "M0 300V215C150 190 300 215 430 185S700 175 860 150S1180 175 1330 150S1500 170 1600 160V300Z",
     far: "M380 300C470 270 560 220 640 170C690 130 715 70 745 60C770 58 790 110 830 150C900 200 1000 235 1120 265L1300 300Z",
     left: "M0 300V250C60 240 110 225 140 190C165 155 175 100 205 90C235 85 245 145 270 170C285 150 300 130 320 140C345 155 370 240 470 275C520 288 560 295 640 300Z",
     right: "M980 300C1010 300 1040 210 1075 120C1095 70 1150 60 1175 110C1205 170 1220 225 1255 235C1285 215 1315 190 1345 205C1380 222 1420 270 1500 285L1600 290V300Z"
   };
   function hills(cls) {
     var s = svg("svg", { viewBox: "0 0 1600 300", preserveAspectRatio: "xMidYMax slice", "class": "hills " + cls, "aria-hidden": "true" });
+    var back = svg("g", { "class": "hills-back" }, s);
+    svg("path", { d: HILLS.back }, back);
     var far = svg("g", { "class": "hills-far" }, s);
     svg("path", { d: HILLS.far }, far);
     var near = svg("g", { "class": "hills-near" }, s);
@@ -803,7 +806,7 @@
     var como = document.getElementById("como");
     var steps = como && como.querySelector(".steps");
     var source = document.querySelector(".map-svg");
-    if (!steps || !source || reduce) return;
+    if (!steps || !source || reduce || window.innerHeight < 560) return;
     var stepItems = steps.querySelectorAll("li");
     var cards = document.querySelectorAll("#app .card");
     var faq = document.querySelectorAll("#duvidas details");
@@ -812,11 +815,11 @@
     }
     /* every scene's words are already on this page, translated */
     var SCENES = [
-      { time: "08:00", h: stepItems[0].querySelector("h3").textContent, p: stepItems[0].querySelector("p").textContent, screen: "map" },
-      { time: "13:00", h: stepItems[1].querySelector("h3").textContent, p: stepItems[1].querySelector("p").textContent, screen: "map" },
-      { time: "17:00", h: fromCard(2).h, p: fromCard(2).p, screen: "ev" },
-      { time: "20:00", h: fromCard(3).h, p: fromCard(3).p, screen: "rest" },
-      { time: "00:30", h: faq[3].querySelector("summary").textContent, p: faq[3].querySelector("p").textContent, screen: "map", off: true }
+      { h: stepItems[0].querySelector("h3").textContent, p: stepItems[0].querySelector("p").textContent, screen: "map" },
+      { h: stepItems[1].querySelector("h3").textContent, p: stepItems[1].querySelector("p").textContent, screen: "map" },
+      { h: fromCard(2).h, p: fromCard(2).p, screen: "ev" },
+      { h: fromCard(3).h, p: fromCard(3).p, screen: "rest" },
+      { h: faq[3].querySelector("summary").textContent, p: faq[3].querySelector("p").textContent, screen: "map", off: true }
     ];
 
     var wrap = el("div", "story");
@@ -833,18 +836,29 @@
     stage.appendChild(sun); stage.appendChild(moon);
     var hs = hills("hills-story");
     stage.appendChild(hs);
+    var hsNight = hills("hills-story hills-night");
+    stage.appendChild(hsNight);
+    var sea = el("div", "story-sea");
+    var glint = el("div", "story-glint");
+    sea.appendChild(glint);
+    stage.appendChild(sea);
     var lights = svg("svg", { viewBox: "0 0 1600 300", preserveAspectRatio: "xMidYMax slice", "class": "story-lights", "aria-hidden": "true" }, stage);
-    for (var i = 0; i < 70; i++) {
-      var lx = (i * 233) % 1600, ly = 296 - ((i * 37) % 26);
+    for (var i = 0; i < 90; i++) {
+      var lx = (i * 233) % 1600, ly = 298 - ((i * 37) % 30);
       svg("circle", { cx: lx, cy: ly, r: 1.6 + (i % 3) * 0.5 }, lights);
     }
 
     var inner = el("div", "story-inner");
     stage.appendChild(inner);
-    var texts = el("div", "story-texts");
+    var column = el("div", "story-col");
     var timeEl = el("div", "story-time");
-    timeEl.setAttribute("aria-hidden", "true");
-    texts.appendChild(timeEl);
+    column.appendChild(timeEl);
+    var texts = el("div", "story-texts");
+    column.appendChild(texts);
+    var rail = el("div", "story-rail");
+    var railFill = el("span", "story-rail-fill");
+    rail.appendChild(railFill);
+    column.appendChild(rail);
     var scenesEls = SCENES.map(function (s) {
       var a = el("article", "story-scene");
       a.appendChild(el("h3", "", s.h));
@@ -852,7 +866,7 @@
       texts.appendChild(a);
       return a;
     });
-    inner.appendChild(texts);
+    inner.appendChild(column);
 
     /* the phone: a copy of the page's map plus two simple screens */
     var phone = el("div", "phone story-phone");
@@ -928,7 +942,7 @@
       else chip.hidden = true;
     }
 
-    var active = -1, ticking = false;
+    var active = -1, ticking = false, shownClock = "";
     function smooth(a, b, v) { var x = clamp((v - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); }
     function render() {
       ticking = false;
@@ -952,6 +966,18 @@
       moon.style.opacity = smooth(0.66, 0.78, p);
       stars.style.opacity = smooth(0.66, 0.85, p);
       lights.style.opacity = smooth(0.55, 0.72, p);
+
+      /* the clock runs with the scroll, 08:00 to 00:30, in steps of five minutes */
+      var mins = 480 + Math.round(p * 990 / 5) * 5;
+      var clock = (Math.floor(mins / 60) % 24 < 10 ? "0" : "") + (Math.floor(mins / 60) % 24) + ":" + (mins % 60 < 10 ? "0" : "") + (mins % 60);
+      if (clock !== shownClock) { shownClock = clock; timeEl.textContent = clock; }
+      stage.classList.toggle("is-night", p > 0.56);
+      railFill.style.transform = "scaleX(" + p.toFixed(3) + ")";
+      hsNight.style.opacity = smooth(0.5, 0.8, p);
+      /* the light on the water follows whichever is in the sky */
+      var gx = p < 0.68 ? 0.1 + clamp(p / 0.7, 0, 1) * 0.8 : 0.14 + moonP * 0.4;
+      glint.style.transform = "translate3d(" + (w * gx).toFixed(1) + "px,0,0)";
+      glint.classList.toggle("is-moon", p >= 0.68);
 
       /* the walker covers the route during the first two scenes */
       var walk = clamp(p / (2 / n), 0, 1);
@@ -981,7 +1007,6 @@
         active = a;
         var sc = SCENES[a];
         scenesEls.forEach(function (e, i) { e.classList.toggle("is-on", i === a); });
-        timeEl.textContent = sc.time;
         scrEv.classList.toggle("is-on", sc.screen === "ev");
         scrRest.classList.toggle("is-on", sc.screen === "rest");
         map.classList.toggle("is-offline", !!sc.off);
@@ -994,6 +1019,36 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     render();
+  })();
+
+  /* ---------- the page closes at night, on the same hills ---------- */
+  (function closing() {
+    var f = document.querySelector(".band.final");
+    if (!f) return;
+    f.classList.add("final-night");
+    var h = hills("hills-final");
+    f.insertBefore(h, f.firstChild);
+    var dots = svg("svg", { viewBox: "0 0 1600 300", preserveAspectRatio: "xMidYMax slice", "class": "final-lights", "aria-hidden": "true" });
+    for (var i = 0; i < 90; i++) svg("circle", { cx: (i * 233) % 1600, cy: 298 - ((i * 37) % 30), r: 1.6 + (i % 3) * 0.5 }, dots);
+    f.insertBefore(dots, h.nextSibling);
+  })();
+
+  /* ---------- the same word, in four languages, lights up together ---------- */
+  (function tongues() {
+    var cols = [].slice.call(document.querySelectorAll(".tongue ul"));
+    if (!cols.length) return;
+    function mark(i) {
+      cols.forEach(function (u) {
+        [].slice.call(u.children).forEach(function (li, j) { li.classList.toggle("is-cross", j === i); });
+      });
+    }
+    cols.forEach(function (u) {
+      [].slice.call(u.children).forEach(function (li, j) {
+        li.addEventListener("pointerenter", function () { mark(j); });
+        li.addEventListener("click", function () { mark(j); });
+      });
+      u.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") mark(-1); });
+    });
   })();
 
   /* ---------- the dancers, at full size ---------- */
