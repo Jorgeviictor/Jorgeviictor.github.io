@@ -554,3 +554,141 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
   .sim-chip[aria-pressed="true"], .lg.is-here { outline: 2px solid Highlight; }
 }
 @media print { .lens, .lens-note, .sim-walk, .sim-tools, .sim-status, .sim-toast, .sim-banner { display: none; } }
+
+/* ============================================================
+   Rio: hills, tappable phone, the day told by the scroll, big dancers
+   ============================================================ */
+.hills path { stroke: none; }
+.hills-hero { position: absolute; left: 0; right: 0; bottom: 0; top: auto !important; width: 100%; height: min(44%, 340px) !important; }
+.hills-hero .hills-far path { fill: var(--sup1); }
+.hills-hero .hills-near path { fill: var(--sup2); }
+.hills .hills-cable { fill: none; stroke: var(--contorno); stroke-width: 1.5; }
+
+/* the one orchestrated page-load moment */
+.hero-in .wrap > div:first-child > * { animation: pv-rise 0.7s var(--ease-out) both; }
+.hero-in .wrap > div:first-child > *:nth-child(2) { animation-delay: 0.06s; }
+.hero-in .wrap > div:first-child > *:nth-child(3) { animation-delay: 0.12s; }
+.hero-in .wrap > div:first-child > *:nth-child(4) { animation-delay: 0.2s; }
+.hero-in .wrap > div:first-child > *:nth-child(5) { animation-delay: 0.26s; }
+.hero-in .wrap > div:first-child > *:nth-child(6) { animation-delay: 0.32s; }
+.hero-in > .wrap > .phone { animation: pv-phone 0.9s var(--ease-out) 0.15s both; }
+.hero-in .hills-hero { animation: pv-fade 1.2s ease-out both; }
+@keyframes pv-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes pv-phone { from { opacity: 0; translate: 0 36px; } to { opacity: 1; translate: 0 0; } }
+@keyframes pv-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* the phone that opens */
+.ph-screen { position: relative; }
+.tiles button.tile {
+  width: 100%; color: var(--texto); font: inherit; font-size: 1rem; font-weight: 700; line-height: 1.2; text-align: left; cursor: pointer; align-items: flex-start;
+  transition: transform 0.16s var(--ease-out), border-color 0.2s ease;
+}
+.tiles button.tile-main { color: var(--na-marca); }
+.tiles button.tile:active { transform: scale(0.97); transition-duration: 0.1s; }
+.ph-panel {
+  position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; padding: 0.6rem 0.9rem 1rem;
+  background: var(--fundo); transform: translateX(100%); visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0.3s;
+}
+.ph-panel.is-open { transform: none; visibility: visible; transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s; }
+.ph-back { align-self: flex-start; min-height: 48px; padding-inline: 0.2rem; border: 0; background: none; color: var(--marca); font: inherit; font-weight: 700; cursor: pointer; }
+.ph-title { font-size: 1.35rem; font-weight: 800; margin: 0.1rem 0 0.2rem; }
+.ph-hint { color: var(--texto2); font-size: 1rem; }
+.ph-list li, .st-list li { padding-block: 0.7rem; border-bottom: 1px solid var(--divisor); font-size: 1rem; line-height: 1.3; }
+@media (hover: hover) and (pointer: fine) { .tiles button.tile:hover { border-color: var(--contorno); } .tiles button.tile-main:hover { border-color: var(--texto); } }
+
+/* a day in Rio */
+#como.has-story { padding-bottom: 0; }
+#como.has-story .steps-as-story {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.story { position: relative; height: calc(var(--scenes) * 80svh + 100svh); margin-top: clamp(1.5rem, 4vw, 2.5rem); }
+.story-stage {
+  --tb: 108px;
+  position: sticky; top: var(--tb); height: calc(100svh - var(--tb)); overflow: hidden; isolation: isolate;
+  background: #5FB4D9; color: #0B1518;
+}
+@media (max-width: 899px) { .story-stage { --tb: 132px; } }
+.story-sky { position: absolute; inset: 0; opacity: 0; }
+.sky-morning { background: linear-gradient(#5FB4D9, #F7D9B0); opacity: 1; }
+.sky-noon { background: linear-gradient(#2E9BD6, #BFE6F2); }
+.sky-late { background: linear-gradient(#3B7FB8, #F8C98A); }
+.sky-dusk { background: linear-gradient(#2C3E7A, #F2836B); }
+.sky-night { background: linear-gradient(#060C1E, #17234A); }
+.story-stars {
+  position: absolute; inset: 0 0 30% 0; opacity: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, #fff, transparent), radial-gradient(1.5px 1.5px at 27% 58%, #fff, transparent),
+    radial-gradient(1px 1px at 38% 14%, #fff, transparent), radial-gradient(1.5px 1.5px at 52% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 64% 18%, #fff, transparent), radial-gradient(1.5px 1.5px at 73% 62%, #fff, transparent),
+    radial-gradient(1px 1px at 84% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 93% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 6% 70%, #fff, transparent), radial-gradient(1px 1px at 45% 76%, #fff, transparent);
+}
+.story-sun, .story-moon { position: absolute; left: 0; top: 0; width: 92px; height: 92px; margin: -46px 0 0 -46px; border-radius: 50%; will-change: transform, opacity; }
+.story-sun { background: #FFD768; box-shadow: 0 0 70px 26px rgba(255, 215, 104, 0.45); }
+.story-moon { width: 66px; height: 66px; margin: -33px 0 0 -33px; opacity: 0; background: #EEF2F7; box-shadow: inset -14px -8px 0 0 #C9D2DE, 0 0 40px 10px rgba(238, 242, 247, 0.22); }
+.hills-story { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 36%; }
+.hills-story .hills-far path { fill: #1E4A52; }
+.hills-story .hills-near path { fill: #0F2A30; }
+.hills-story .hills-cable { stroke: #0F2A30; }
+.story-lights { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 36%; opacity: 0; }
+.story-lights circle { fill: #FFD768; }
+
+.story-inner {
+  position: relative; z-index: 1; height: 100%; max-width: 1180px; margin-inline: auto;
+  padding: clamp(0.75rem, 3vh, 2rem) clamp(1.25rem, 4vw, 2.5rem);
+  display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 0.75rem; justify-items: center;
+}
+@media (min-width: 900px) { .story-inner { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5rem); align-items: center; } }
+.story-texts { position: relative; width: 100%; max-width: 34rem; min-height: 11.5rem; padding: 0.9rem 1.15rem 1.1rem; border-radius: 20px; background: var(--fundo); color: var(--texto); box-shadow: 0 24px 50px -28px rgba(2, 10, 13, 0.7); }
+@media (min-width: 900px) { .story-texts { min-height: 15.5rem; padding: 1.6rem 1.9rem 2rem; } }
+.story-time { font-size: clamp(2.2rem, 1.6rem + 3vw, 4.4rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--marca); }
+.story-scene { position: absolute; left: 1.15rem; right: 1.15rem; opacity: 0; transform: translateY(10px); transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out); }
+@media (min-width: 900px) { .story-scene { left: 1.9rem; right: 1.9rem; } }
+.story-scene.is-on { opacity: 1; transform: none; }
+.story-scene h3 { font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.7rem); font-weight: 800; line-height: 1.2; }
+.story-scene p { margin-top: 0.3rem; color: var(--texto2); line-height: 1.4; }
+@media (max-width: 899px) {
+  .story-scene p { font-size: 1rem; }
+  .story-texts { min-height: 11.75rem; }
+  .story-phone .sim-toast span:not(.sim-bar) { display: none; }
+}
+
+.story-phone { align-self: stretch; display: flex; width: auto; aspect-ratio: 322 / 560; max-width: min(78vw, 322px); max-height: 100%; min-height: 0; margin: 0; padding: 8px; border-radius: 30px; }
+@media (min-width: 900px) { .story-phone { align-self: center; height: min(82%, 600px); } }
+@media (max-width: 899px) { .story-phone { aspect-ratio: 3 / 4; max-width: 88vw; } }
+.story-phone .screen { position: relative; flex: 1; min-width: 0; border-radius: 22px; color: var(--texto); }
+.story-phone .map-svg { width: 100%; height: 100%; }
+.story-phone .sim-status.is-away, .story-phone .sim-status[hidden] { display: none; }
+.st-screen {
+  position: absolute; inset: 0; z-index: 2; padding: 1rem 0.9rem; background: var(--fundo); color: var(--texto);
+  opacity: 0; transform: translateX(14%); visibility: hidden;
+  transition: opacity 0.25s var(--ease-out), transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s linear 0.3s;
+}
+.st-screen.is-on { opacity: 1; transform: none; visibility: visible; transition: opacity 0.25s var(--ease-out), transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), visibility 0s; }
+.st-title { margin: 0 0 0.2rem; font-size: 1.35rem; font-weight: 800; }
+.st-hint { color: var(--texto2); font-size: 1rem; }
+.story-phone .sim-banner { z-index: 1; }
+
+/* dancers, wide */
+.dance-band h2 { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+.dance-wide svg { width: 100%; height: auto; overflow: visible; }
+.dance-wide .fig line, .dance-wide .fig circle { stroke: var(--contorno); stroke-width: 3; }
+.dance-wide .fig.solo line, .dance-wide .fig.solo circle { stroke: var(--solista); stroke-width: 4; }
+.dance-wide .fig { transition: none; }
+.rhythm-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 1.4rem; }
+.rhythm-bar .dance-toggle { margin-left: 0; color: var(--texto); }
+.rhythm-btn {
+  min-height: 48px; padding-inline: 1rem; border: 1px solid var(--divisor); border-radius: 12px; background: none;
+  color: var(--texto); font: inherit; font-weight: 700; cursor: pointer;
+  transition: transform 0.16s var(--ease-out), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.rhythm-btn:active { transform: scale(0.97); transition-duration: 0.1s; }
+.rhythm-btn[aria-pressed="true"] { background: var(--marca); border-color: var(--marca); color: var(--na-marca); }
+@media (hover: hover) and (pointer: fine) { .rhythm-btn:hover { border-color: var(--contorno); } }
+
+@media (forced-colors: active) {
+  .story-sky, .story-sun, .story-moon, .story-stars, .story-lights, .hills { display: none; }
+  .rhythm-btn[aria-pressed="true"] { outline: 2px solid Highlight; }
+}
+@media print { .story, .dance-band, .hills, .ph-panel { display: none; } #como.has-story .steps-as-story { position: static; width: auto; height: auto; clip-path: none; } }

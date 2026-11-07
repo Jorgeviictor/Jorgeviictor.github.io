@@ -612,3 +612,446 @@
     }
   })();
 })();
+
+/* ============================================================
+   Rio itself: the hills, a phone you can really tap, a day told by the
+   scroll and the dancers at full size. Built here, so the page is still
+   complete with JS off; reduced motion keeps the static three steps.
+   Texts reuse what the page already says, in its own language, whenever
+   they can; itinerary and place names come from the app's approved seeds.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var NS = "http://www.w3.org/2000/svg";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var lang = document.documentElement.lang.slice(0, 2).toLowerCase();
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+  function svg(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function txt(sel) { var n = document.querySelector(sel); return n ? n.textContent.trim() : ""; }
+
+  var T = {
+    pt: { back: "Voltar", day: "dia", days: "dias", sample: "Exemplos", tap: "Toque nos blocos do celular.", dayTitle: "Um dia no Rio",
+      rhythmH: "O Rio tem ritmo. Escolha um.", pause: "Pausar a dança",
+      perfil: ["Idioma", "Aparência", "Assinatura", "Apagar meus dados"],
+      rest: ["Boteco raiz", "Jantar especial", "Pé na areia", "Café forte"],
+      ev: ["Roda de samba, sáb 20h", "Feira de rua, dom 10h", "Show na praia, sex 19h"],
+      rot: ["Urca e Pão de Açúcar", "Clássicos da Zona Sul", "Primeira vez no Rio"],
+      cult: ["Museu de Arte Moderna do Rio de Janeiro", "Cine Odeon", "Teatro Riachuelo"],
+      report: "Via bloqueada", gone: "Relato de exemplo: some sozinho", off: "Os dados ficam no aparelho; o mapa precisa de internet." },
+    en: { back: "Back", day: "day", days: "days", sample: "Examples", tap: "Tap the blocks on the phone.", dayTitle: "A day in Rio",
+      rhythmH: "Rio has rhythm. Pick one.", pause: "Pause the dance",
+      perfil: ["Language", "Appearance", "Subscription", "Delete my data"],
+      rest: ["Classic boteco", "Special dinner", "By the beach", "Strong coffee"],
+      ev: ["Samba circle, Sat 8 pm", "Street fair, Sun 10 am", "Beach concert, Fri 7 pm"],
+      rot: ["Urca and Sugarloaf", "South Zone Classics", "First Time in Rio"],
+      cult: ["Museum of Modern Art, Rio de Janeiro", "Cine Odeon", "Riachuelo Theatre"],
+      report: "Blocked road", gone: "Sample report: clears on its own", off: "Data stays on your device; the map needs internet." },
+    es: { back: "Volver", day: "día", days: "días", sample: "Ejemplos", tap: "Toca los bloques del teléfono.", dayTitle: "Un día en Río",
+      rhythmH: "Río tiene ritmo. Elige uno.", pause: "Pausar el baile",
+      perfil: ["Idioma", "Apariencia", "Suscripción", "Borrar mis datos"],
+      rest: ["Boteco clásico", "Cena especial", "Junto al mar", "Café fuerte"],
+      ev: ["Rueda de samba, sáb 20 h", "Feria callejera, dom 10 h", "Show en la playa, vie 19 h"],
+      rot: ["Urca y Pan de Azúcar", "Clásicos de la Zona Sur", "Primera vez en Río"],
+      cult: ["Museo de Arte Moderno de Río de Janeiro", "Cine Odeon", "Teatro Riachuelo"],
+      report: "Vía bloqueada", gone: "Reporte de ejemplo: desaparece solo", off: "Los datos se guardan en el dispositivo; el mapa necesita internet." },
+    zh: { back: "返回", day: "天", days: "天", sample: "示例", tap: "点击手机上的方块。", dayTitle: "里约的一天",
+      rhythmH: "里约自有节奏，选一种吧。", pause: "暂停舞蹈",
+      perfil: ["语言", "外观", "订阅", "删除我的数据"],
+      rest: ["传统小酒馆", "特别晚餐", "海滩边", "浓咖啡"],
+      ev: ["桑巴圈，周六 20:00", "街头市集，周日 10:00", "海滩音乐会，周五 19:00"],
+      rot: ["乌尔卡与糖面包山", "南区经典之旅", "初游里约"],
+      cult: ["里约热内卢现代艺术博物馆", "奥德昂电影院", "里亚丘埃洛剧院"],
+      report: "道路封闭", gone: "示例报告：会自动消失", off: "数据保存在设备上；地图需要联网。" }
+  };
+  var t = T[lang] || T.pt;
+
+  /* Hill outlines only: Dois Irmãos, Corcovado (no statue) and Sugarloaf with Urca */
+  var HILLS = {
+    far: "M380 300C470 270 560 220 640 170C690 130 715 70 745 60C770 58 790 110 830 150C900 200 1000 235 1120 265L1300 300Z",
+    left: "M0 300V250C60 240 110 225 140 190C165 155 175 100 205 90C235 85 245 145 270 170C285 150 300 130 320 140C345 155 370 240 470 275C520 288 560 295 640 300Z",
+    right: "M980 300C1010 300 1040 210 1075 120C1095 70 1150 60 1175 110C1205 170 1220 225 1255 235C1285 215 1315 190 1345 205C1380 222 1420 270 1500 285L1600 290V300Z"
+  };
+  function hills(cls) {
+    var s = svg("svg", { viewBox: "0 0 1600 300", preserveAspectRatio: "xMidYMax slice", "class": "hills " + cls, "aria-hidden": "true" });
+    var far = svg("g", { "class": "hills-far" }, s);
+    svg("path", { d: HILLS.far }, far);
+    var near = svg("g", { "class": "hills-near" }, s);
+    svg("path", { d: HILLS.left }, near);
+    svg("path", { d: HILLS.right }, near);
+    svg("path", { d: "M1150 76L1318 196", "class": "hills-cable" }, near);
+    return s;
+  }
+
+  /* ---------- hero: the hills, an entrance, a phone that leans ---------- */
+  (function hero() {
+    var h = document.querySelector(".hero");
+    if (!h) return;
+    var lens = h.querySelector(".lens");
+    var s = hills("hills-hero");
+    if (lens) lens.insertBefore(s, lens.querySelector(".lens-full"));
+    else h.insertBefore(s, h.firstChild);
+    var note = h.querySelector(".lens-note");
+    if (note) note.textContent += " " + t.tap;
+    if (reduce) return;
+    h.classList.add("hero-in");
+
+    var phone = h.querySelector(".phone");
+    var far = s.querySelector(".hills-far"), near = s.querySelector(".hills-near");
+    var mx = 0, my = 0, cx = 0, cy = 0, raf = null, last = 0, scrollY0 = 0;
+    function frame(now) {
+      var dt = Math.min(48, now - last); last = now;
+      var f = 1 - Math.exp(-dt / 140);
+      cx += (mx - cx) * f; cy += (my - cy) * f;
+      far.setAttribute("transform", "translate(" + (cx * -10).toFixed(2) + " 0)");
+      near.setAttribute("transform", "translate(" + (cx * -24).toFixed(2) + " 0)");
+      if (phone) phone.style.transform = "perspective(1100px) rotateY(" + (cx * 7).toFixed(2) + "deg) rotateX(" + (cy * -5).toFixed(2) + "deg)";
+      raf = Math.abs(mx - cx) + Math.abs(my - cy) > 0.002 ? requestAnimationFrame(frame) : null;
+    }
+    function wake() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+    if (fine) {
+      h.addEventListener("pointermove", function (e) {
+        var b = h.getBoundingClientRect();
+        mx = (e.clientX - b.left) / b.width * 2 - 1;
+        my = (e.clientY - b.top) / b.height * 2 - 1;
+        wake();
+      });
+      h.addEventListener("pointerleave", function () { mx = 0; my = 0; wake(); });
+    }
+    /* the hills sink slower than the page as it scrolls away */
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 1400) return;
+      if (Math.abs(window.scrollY - scrollY0) < 2) return;
+      scrollY0 = window.scrollY;
+      s.style.transform = "translate3d(0," + (scrollY0 * 0.18).toFixed(1) + "px,0)";
+    }, { passive: true });
+  })();
+
+  /* ---------- the phone in the hero really opens ---------- */
+  (function phoneApp() {
+    var screen = document.querySelector(".hero .screen");
+    var tiles = document.querySelector(".hero .tiles");
+    if (!screen || !tiles) return;
+    tiles.removeAttribute("aria-hidden");
+    screen.classList.add("ph-screen");
+    var panel = el("div", "ph-panel");
+    panel.inert = true;
+    var back = el("button", "ph-back", "‹ " + t.back);
+    back.type = "button";
+    var title = el("h3", "ph-title");
+    var hint = el("p", "ph-hint");
+    var list = el("ul", "ph-list");
+    [back, title, hint, list].forEach(function (n) { panel.appendChild(n); });
+    screen.appendChild(panel);
+    var opener = null;
+    function close() {
+      panel.classList.remove("is-open");
+      panel.inert = true;
+      if (opener) opener.focus({ preventScroll: true });
+      opener = null;
+    }
+    back.addEventListener("click", close);
+    panel.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+
+    var ROWS = [
+      null,
+      t.rot.map(function (r, i) { return (i + 1) + " " + (i ? t.days : t.day) + ": " + r; }),
+      t.ev,
+      t.rest,
+      t.cult,
+      t.perfil
+    ];
+    [].slice.call(tiles.children).forEach(function (old, i) {
+      var b = el("button", old.className);
+      b.type = "button";
+      b.innerHTML = old.innerHTML;
+      b.setAttribute("style", old.getAttribute("style") || "");
+      old.parentNode.replaceChild(b, old);
+      b.addEventListener("click", function () {
+        if (i === 0) {
+          var m = document.getElementById("mapa");
+          if (m) m.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+          return;
+        }
+        title.textContent = b.textContent.trim();
+        hint.textContent = i === 2 ? t.sample : "";
+        hint.hidden = i !== 2;
+        list.textContent = "";
+        ROWS[i].forEach(function (r) { list.appendChild(el("li", "", r)); });
+        panel.inert = false;
+        panel.classList.add("is-open");
+        opener = b;
+        back.focus({ preventScroll: true });
+      });
+    });
+  })();
+
+  /* ---------- a day in Rio, told by the scroll ---------- */
+  (function story() {
+    var como = document.getElementById("como");
+    var steps = como && como.querySelector(".steps");
+    var source = document.querySelector(".map-svg");
+    if (!steps || !source || reduce) return;
+    var stepItems = steps.querySelectorAll("li");
+    var cards = document.querySelectorAll("#app .card");
+    var faq = document.querySelectorAll("#duvidas details");
+    function fromCard(i) {
+      return { h: cards[i].querySelector("h3").textContent, p: cards[i].querySelector("p").textContent };
+    }
+    /* every scene's words are already on this page, translated */
+    var SCENES = [
+      { time: "08:00", h: stepItems[0].querySelector("h3").textContent, p: stepItems[0].querySelector("p").textContent, screen: "map" },
+      { time: "13:00", h: stepItems[1].querySelector("h3").textContent, p: stepItems[1].querySelector("p").textContent, screen: "map" },
+      { time: "17:00", h: fromCard(2).h, p: fromCard(2).p, screen: "ev" },
+      { time: "20:00", h: fromCard(3).h, p: fromCard(3).p, screen: "rest" },
+      { time: "00:30", h: faq[3].querySelector("summary").textContent, p: faq[3].querySelector("p").textContent, screen: "map", off: true }
+    ];
+
+    var wrap = el("div", "story");
+    wrap.style.setProperty("--scenes", SCENES.length);
+    var stage = el("div", "story-stage");
+    wrap.appendChild(stage);
+
+    /* the sky: crossfaded layers, so the scroll only touches opacity */
+    var SKIES = ["sky-morning", "sky-noon", "sky-late", "sky-dusk", "sky-night"];
+    var skyEls = SKIES.map(function (c) { var d = el("div", "story-sky " + c); stage.appendChild(d); return d; });
+    var stars = el("div", "story-stars");
+    stage.appendChild(stars);
+    var sun = el("div", "story-sun"), moon = el("div", "story-moon");
+    stage.appendChild(sun); stage.appendChild(moon);
+    var hs = hills("hills-story");
+    stage.appendChild(hs);
+    var lights = svg("svg", { viewBox: "0 0 1600 300", preserveAspectRatio: "xMidYMax slice", "class": "story-lights", "aria-hidden": "true" }, stage);
+    for (var i = 0; i < 70; i++) {
+      var lx = (i * 233) % 1600, ly = 296 - ((i * 37) % 26);
+      svg("circle", { cx: lx, cy: ly, r: 1.6 + (i % 3) * 0.5 }, lights);
+    }
+
+    var inner = el("div", "story-inner");
+    stage.appendChild(inner);
+    var texts = el("div", "story-texts");
+    var timeEl = el("div", "story-time");
+    timeEl.setAttribute("aria-hidden", "true");
+    texts.appendChild(timeEl);
+    var scenesEls = SCENES.map(function (s) {
+      var a = el("article", "story-scene");
+      a.appendChild(el("h3", "", s.h));
+      a.appendChild(el("p", "", s.p));
+      texts.appendChild(a);
+      return a;
+    });
+    inner.appendChild(texts);
+
+    /* the phone: a copy of the page's map plus two simple screens */
+    var phone = el("div", "phone story-phone");
+    var scr = el("div", "screen sim-screen");
+    phone.appendChild(scr);
+    inner.appendChild(phone);
+    var map = source.cloneNode(true);
+    map.removeAttribute("data-filter");
+    [].slice.call(map.querySelectorAll(".sim, defs")).forEach(function (n) { n.remove(); });
+    map.setAttribute("aria-hidden", "true");
+    map.removeAttribute("role");
+    map.setAttribute("preserveAspectRatio", "xMidYMid slice");
+    map.setAttribute("viewBox", "0 0 320 560");
+    scr.appendChild(map);
+    var ROUTE = "M56 76C96 56 140 54 172 80S252 124 272 182S214 262 170 232S86 186 60 218S84 332 146 382";
+    var g = svg("g", { "class": "sim" }, map);
+    svg("path", { d: ROUTE, "class": "sim-route" }, g);
+    var trail = svg("path", { d: ROUTE, "class": "sim-trail" }, g);
+    var me = svg("g", { "class": "sim-me" }, g);
+    svg("circle", { r: 13, "class": "sim-halo" }, me);
+    svg("circle", { r: 7, "class": "sim-dot" }, me);
+    var chip = el("div", "sim-status");
+    chip.setAttribute("aria-hidden", "true");
+    scr.appendChild(chip);
+    var toast = el("div", "sim-toast");
+    toast.setAttribute("aria-hidden", "true");
+    toast.appendChild(el("strong", "", t.report));
+    toast.appendChild(el("span", "", t.gone));
+    var bar = el("span", "sim-bar");
+    toast.appendChild(bar);
+    scr.appendChild(toast);
+    var offBanner = el("div", "sim-banner");
+    offBanner.setAttribute("aria-hidden", "true");
+    scr.appendChild(offBanner);
+
+    function listScreen(title, rows, hint) {
+      var d = el("div", "st-screen");
+      d.appendChild(el("h4", "st-title", title));
+      if (hint) d.appendChild(el("p", "st-hint", hint));
+      var u = el("ul", "st-list");
+      rows.forEach(function (r) { u.appendChild(el("li", "", r)); });
+      d.appendChild(u);
+      scr.appendChild(d);
+      return d;
+    }
+    var scrEv = listScreen(fromCard(2).h, t.ev, t.sample);
+    var scrRest = listScreen(fromCard(3).h, t.rest);
+
+    /* the three steps stay for screen readers and search; the story is the visual */
+    wrap.setAttribute("aria-hidden", "true");
+    steps.classList.add("steps-as-story");
+    var heading = como.querySelector("h2");
+    if (heading) heading.textContent = t.dayTitle;
+    como.classList.add("has-story");
+    /* full-bleed: out of the section's .wrap */
+    como.appendChild(wrap);
+
+    var LEN = trail.getTotalLength();
+    trail.style.strokeDasharray = LEN + " " + LEN;
+    var pt = map.createSVGPoint ? map.createSVGPoint() : null;
+    var zonePaths = [].slice.call(map.querySelectorAll(".zone")).map(function (z) {
+      return { z: z.classList.contains("z-livre") ? "livre" : z.classList.contains("z-atencao") ? "atencao" : "guia", p: z.querySelector("path") };
+    });
+    var LEG = {};
+    ["livre", "atencao", "guia"].forEach(function (z) { LEG[z] = { w: txt(".lg-" + z + " .lg-name"), i: document.querySelector(".lg-" + z + " .lg-icon svg") }; });
+    var chipZone = "x";
+    function setChip(z) {
+      if (z === chipZone) return;
+      chipZone = z;
+      chip.dataset.z = z || "";
+      chip.textContent = "";
+      if (z && LEG[z]) { chip.appendChild(LEG[z].i.cloneNode(true)); chip.appendChild(el("span", "", LEG[z].w)); chip.hidden = false; }
+      else chip.hidden = true;
+    }
+
+    var active = -1, ticking = false;
+    function smooth(a, b, v) { var x = clamp((v - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); }
+    function render() {
+      ticking = false;
+      var r = wrap.getBoundingClientRect();
+      var span = r.height - stage.offsetHeight;
+      if (span <= 0) return;
+      var p = clamp(-r.top / span, 0, 1);
+      var n = SCENES.length;
+      var a = clamp(Math.floor(p * n), 0, n - 1);
+
+      /* sky: each layer fades in over the previous */
+      var pos = p * (SKIES.length - 1);
+      skyEls.forEach(function (s, i) { s.style.opacity = i === 0 ? 1 : smooth(i - 1 + 0.15, i - 0.15, pos); });
+      /* sun and moon cross on an arc: transform only */
+      var w = stage.clientWidth, hh = stage.clientHeight;
+      var sunP = clamp(p / 0.7, 0, 1);
+      sun.style.transform = "translate3d(" + (w * (0.1 + sunP * 0.8)).toFixed(1) + "px," + (hh * (0.72 - Math.sin(sunP * Math.PI) * 0.62)).toFixed(1) + "px,0)";
+      sun.style.opacity = 1 - smooth(0.62, 0.72, p);
+      var moonP = clamp((p - 0.66) / 0.34, 0, 1);
+      moon.style.transform = "translate3d(" + (w * (0.14 + moonP * 0.4)).toFixed(1) + "px," + (hh * (0.5 - moonP * 0.36)).toFixed(1) + "px,0)";
+      moon.style.opacity = smooth(0.66, 0.78, p);
+      stars.style.opacity = smooth(0.66, 0.85, p);
+      lights.style.opacity = smooth(0.55, 0.72, p);
+
+      /* the walker covers the route during the first two scenes */
+      var walk = clamp(p / (2 / n), 0, 1);
+      var at = trail.getPointAtLength(walk * LEN);
+      me.setAttribute("transform", "translate(" + at.x.toFixed(1) + " " + at.y.toFixed(1) + ")");
+      trail.style.strokeDashoffset = String(LEN * (1 - walk));
+      var rect = map.getBoundingClientRect();
+      if (rect.width) {
+        var vis = 320 * (rect.height / rect.width);
+        if (vis < 560) {
+          var top = clamp(at.y - vis / 2, 0, 560 - vis);
+          map.setAttribute("viewBox", "0 " + top.toFixed(1) + " 320 " + vis.toFixed(1));
+        }
+      }
+      if (pt) {
+        pt.x = at.x; pt.y = at.y;
+        var f = null;
+        for (var i = 0; i < zonePaths.length; i++) { if (zonePaths[i].p.isPointInFill(pt)) { f = zonePaths[i].z; break; } }
+        setChip(f);
+      }
+      /* a report arrives and runs out while you scroll past it */
+      var rep = (p - 0.24) / 0.14;
+      toast.classList.toggle("is-on", rep > 0 && rep < 1);
+      bar.style.transform = "scaleX(" + clamp(1 - rep, 0, 1).toFixed(3) + ")";
+
+      if (a !== active) {
+        active = a;
+        var sc = SCENES[a];
+        scenesEls.forEach(function (e, i) { e.classList.toggle("is-on", i === a); });
+        timeEl.textContent = sc.time;
+        scrEv.classList.toggle("is-on", sc.screen === "ev");
+        scrRest.classList.toggle("is-on", sc.screen === "rest");
+        map.classList.toggle("is-offline", !!sc.off);
+        chip.classList.toggle("is-away", sc.screen !== "map");
+        offBanner.classList.toggle("is-on", !!sc.off);
+        offBanner.textContent = sc.off ? t.off : "";
+      }
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(render); } }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    render();
+  })();
+
+  /* ---------- the dancers, at full size ---------- */
+  (function band() {
+    var finalBand = document.querySelector(".band.final");
+    var dance = document.querySelector(".hero .dance");
+    if (!finalBand || !dance || reduce) return;
+    var names = JSON.parse(dance.getAttribute("data-names"));
+    var RH = Object.keys(names);
+    var sec = el("section", "band dance-band");
+    var id = "ritmo-h";
+    sec.setAttribute("aria-labelledby", id);
+    var wrap = el("div", "wrap");
+    var h = el("h2", "", t.rhythmH);
+    h.id = id;
+    wrap.appendChild(h);
+    var stageEl = el("div", "dance-wide");
+    stageEl.setAttribute("data-rhythm", "samba");
+    var s = svg("svg", { viewBox: "0 0 960 110", "aria-hidden": "true" }, stageEl);
+    for (var i = 0; i < 12; i++) {
+      var x = 40 + i * 80;
+      var fig = svg("g", { "class": "fig" + (i % 4 === 1 ? " solo" : "") }, s);
+      svg("circle", { cx: x, cy: 16, r: 8 }, fig);
+      svg("line", { x1: x, y1: 24, x2: x, y2: 62 }, fig);
+      [["a-l", 32, 58], ["a-r", 32, 58], ["l-l", 62, 100], ["l-r", 62, 100]].forEach(function (l) {
+        svg("line", { "class": "limb " + l[0], x1: x, y1: l[1], x2: x, y2: l[2] }, fig);
+      });
+    }
+    wrap.appendChild(stageEl);
+    var bar = el("div", "rhythm-bar");
+    var toggle = el("button", "dance-toggle");
+    toggle.type = "button";
+    toggle.setAttribute("aria-pressed", "false");
+    toggle.setAttribute("aria-label", t.pause);
+    toggle.innerHTML = dance.querySelector(".dance-toggle").innerHTML;
+    bar.appendChild(toggle);
+    var btns = RH.map(function (k, i) {
+      var b = el("button", "rhythm-btn", names[k]);
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(i === 0));
+      b.addEventListener("click", function () {
+        stageEl.setAttribute("data-rhythm", k);
+        btns.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      });
+      bar.appendChild(b);
+      return b;
+    });
+    wrap.appendChild(bar);
+    sec.appendChild(wrap);
+    finalBand.parentNode.insertBefore(sec, finalBand);
+    var paused = false, on = false;
+    function sync() { stageEl.classList.toggle("is-paused", paused || !on); }
+    toggle.addEventListener("click", function () {
+      paused = !paused;
+      toggle.setAttribute("aria-pressed", String(paused));
+      sync();
+    });
+    new IntersectionObserver(function (e) { on = e[0].isIntersecting; sync(); }).observe(stageEl);
+    sync();
+  })();
+})();
