@@ -260,10 +260,9 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
 /* map + legend */
 .map-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
 @media (min-width: 900px) { .map-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } }
-/* phones: the map stays in view while you go through the legend */
+/* phones: taller map, since it now carries the route and its messages */
 @media (max-width: 899px) {
-  .map-figure { position: sticky; top: 136px; z-index: 2; padding-bottom: 0.5rem; background: var(--fundo); }
-  .map-figure .map-svg { height: 230px; }
+  .map-figure .map-svg { height: 300px; }
   .map-figure .phone { border-radius: 26px; }
   .map-figure .screen { border-radius: 17px; }
   .map-note { margin-top: 0.4rem; }
@@ -410,3 +409,148 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
   .topbar, .dance, .lang-hint { display: none; }
   .js .rv { opacity: 1; transform: none; }
 }
+
+/* ============================================================
+   Interactive layer. Built by pv.js: with JS off none of this exists.
+   ============================================================ */
+
+/* hero: the lens */
+.hero { position: relative; isolation: isolate; overflow: clip; }
+.hero > .wrap { position: relative; z-index: 1; }
+.lens { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.lens svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lens-rua { fill: none; stroke: var(--mapa-rua); stroke-width: 5; stroke-linecap: round; }
+.lens-base { opacity: 0.32; }
+.lens-full { background: var(--mapa-agua); clip-path: circle(0 at 0 0); }
+.lens-full .lens-rua { opacity: 0.9; }
+.lens-ring {
+  position: absolute; left: 0; top: 0; border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--marca), 0 18px 50px -12px var(--sombra);
+  will-change: transform;
+}
+.lens-tag {
+  position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none;
+  padding: 0.15rem 0.6rem; border-radius: 8px; border: 1px solid transparent;
+  background: var(--fundo); font-size: 1rem; font-weight: 700; line-height: 1.3; text-align: center; white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+.lens-tag[data-z=""] { opacity: 0; }
+.lens-tag[data-z="livre"] { color: var(--livre); border-color: var(--livre); }
+.lens-tag[data-z="atencao"] { color: var(--atencao); border-color: var(--atencao); }
+.lens-tag[data-z="guia"] { color: var(--guia); border-color: var(--guia); }
+/* the words stay legible when the lens passes behind them */
+.hero h1, .hero-sub, .eyebrow, .soon { position: relative; text-shadow: 0 0 14px var(--fundo), 0 0 3px var(--fundo); }
+.lens-note {
+  position: relative; z-index: 1; max-width: 1180px; margin: 2.2rem auto 0;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem); color: var(--texto2); text-shadow: 0 0 10px var(--fundo);
+}
+
+/* dancers: tap to change the rhythm */
+.dance-next {
+  min-height: 48px; padding-inline: 0.6rem; margin-right: -0.6rem; border: 0; border-radius: 12px;
+  background: none; color: var(--texto); font: inherit; font-weight: 700; cursor: pointer;
+  text-decoration: underline; text-decoration-color: var(--contorno); text-underline-offset: 4px;
+  transition: transform 0.16s var(--ease-out);
+}
+.dance-next:active { transform: scale(0.97); transition-duration: 0.1s; }
+
+/* map: route, walker, reports */
+.sim-screen { position: relative; }
+.sim-route, .sim-trail { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.sim-route { stroke: var(--contorno); stroke-width: 3; stroke-dasharray: 1 8; }
+.sim-trail { stroke: var(--marca); stroke-width: 5; }
+.sim-dot { fill: var(--marca); stroke: var(--foco); stroke-width: 2.5; }
+.sim-halo { fill: var(--marca); opacity: 0.25; transition: transform 0.16s var(--ease-out); }
+.is-drag .sim-halo { transform: scale(1.35); }
+.sim-hit { fill: transparent; cursor: grab; touch-action: none; }
+.is-drag .sim-hit { cursor: grabbing; }
+.sim-pin { opacity: 0; transition: opacity 0.2s var(--ease-out); }
+.sim-pin circle { fill: var(--fundo); stroke: var(--texto); stroke-width: 2; }
+.sim-pin path { fill: none; stroke: var(--texto); stroke-width: 2.4; stroke-linecap: round; }
+.sim-pin.is-on { opacity: 1; }
+.map-svg .terra, .map-svg .rua { transition: opacity 0.25s ease; }
+.map-svg.is-offline .terra, .map-svg.is-offline .rua { opacity: 0; }
+.map-svg.is-offline { background: var(--fundo); }
+
+.sim-status {
+  position: absolute; top: 10px; left: 10px; right: 10px;
+  display: flex; align-items: center; gap: 0.45rem; padding: 0.35rem 0.6rem; border-radius: 10px;
+  border: 2px solid var(--contorno); background: var(--fundo); color: var(--texto2);
+  font-size: 1rem; font-weight: 700; line-height: 1.25;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.sim-status-icon { display: contents; }
+.sim-status svg { flex: none; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sim-status[data-z="livre"] { color: var(--livre); border-color: var(--livre); }
+.sim-status[data-z="atencao"] { color: var(--atencao); border-color: var(--atencao); border-style: dashed; }
+.sim-status[data-z="guia"] { color: var(--guia); border-color: var(--guia); border-style: dotted; }
+.sim-banner {
+  position: absolute; left: 10px; right: 10px; bottom: 10px; display: none; padding: 0.45rem 0.6rem; border-radius: 10px;
+  background: var(--sup2); color: var(--texto); font-size: 1rem; line-height: 1.3;
+}
+.sim-banner.is-on { display: block; }
+.sim-toast {
+  position: absolute; left: 10px; right: 10px; bottom: 10px; overflow: hidden;
+  display: grid; padding: 0.45rem 0.6rem 0.6rem; border-radius: 10px; border: 1px solid var(--contorno);
+  background: var(--fundo); font-size: 1rem; line-height: 1.3;
+  opacity: 0; transform: translateY(8px); pointer-events: none;
+  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+.sim-toast.is-on { opacity: 1; transform: none; }
+.sim-toast span:not(.sim-bar) { color: var(--texto2); }
+.sim-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--marca); transform-origin: left; }
+
+.sim-walk { display: grid; gap: 0.1rem; margin-top: 0.6rem; font-weight: 700; }
+.sim-walk input { width: 100%; min-height: 48px; margin: 0; accent-color: var(--marca); cursor: pointer; }
+
+.sim-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.5rem; padding-bottom: 0.4rem; }
+.sim-switch {
+  display: inline-flex; align-items: center; gap: 0.6rem; min-height: 48px; padding: 0; border: 0; background: none;
+  color: var(--texto); font: inherit; font-weight: 700; cursor: pointer;
+}
+.sim-track { position: relative; width: 46px; height: 28px; border-radius: 14px; border: 2px solid var(--contorno); transition: background-color 0.2s ease, border-color 0.2s ease; }
+.sim-track::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--texto2);
+  transition: transform 0.2s var(--ease-out), background-color 0.2s ease;
+}
+.sim-switch[aria-checked="true"] .sim-track { background: var(--marca); border-color: var(--marca); }
+.sim-switch[aria-checked="true"] .sim-track::after { transform: translateX(18px); background: var(--na-marca); }
+.sim-langs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem; }
+.sim-langs-label { margin-right: 0.45rem; color: var(--texto2); }
+.sim-chip {
+  min-width: 48px; min-height: 48px; padding-inline: 0.4rem; border: 0; border-radius: 8px; background: none;
+  color: var(--texto2); font: inherit; font-weight: 600; cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.sim-chip[aria-pressed="true"] { color: var(--texto); background: var(--sup2); }
+.lg.is-here { border-color: var(--c); background: var(--bg); }
+@media (hover: hover) and (pointer: fine) {
+  .sim-chip:hover { color: var(--texto); }
+  .lg.is-here:hover { border-color: var(--c); }
+}
+
+/* scroll-driven, where the browser can: the slang term comes into focus and
+   the three steps draw their own line. Older browsers show the static page. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .entry-term { animation: pv-focus linear both; animation-timeline: view(); animation-range: entry 15% cover 38%; }
+    .steps li { position: relative; border-top-color: var(--divisor); }
+    .steps li::after {
+      content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 2px; background: var(--marca); transform-origin: left;
+      animation: pv-draw linear both; animation-timeline: view(); animation-range: entry 25% cover 45%;
+    }
+  }
+}
+@keyframes pv-focus { from { filter: blur(14px); opacity: 0.25; } to { filter: blur(0); opacity: 1; } }
+@keyframes pv-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-toast { transform: none; }
+  .is-drag .sim-halo, .dance-next:active { transform: none; }
+}
+@media (forced-colors: active) {
+  .lens { display: none; }
+  .sim-switch[aria-checked="true"] .sim-track { background: Highlight; }
+  .sim-chip[aria-pressed="true"], .lg.is-here { outline: 2px solid Highlight; }
+}
+@media print { .lens, .lens-note, .sim-walk, .sim-tools, .sim-status, .sim-toast, .sim-banner { display: none; } }
