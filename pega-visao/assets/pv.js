@@ -35,45 +35,6 @@
     });
   });
 
-  /* ---------- dancers: as in the app, the rhythm changes every 20 s ---------- */
-  var dance = document.querySelector(".dance");
-  if (dance) {
-    var names = JSON.parse(dance.getAttribute("data-names"));
-    var RHYTHMS = ["samba", "funk", "charme", "pagode", "bossa"];
-    var label = dance.querySelector("[data-rhythm-name]");
-    var toggle = dance.querySelector(".dance-toggle");
-    var idx = 0, timer = null, userPaused = false, onScreen = true;
-
-    var show = function (i) {
-      idx = i;
-      dance.setAttribute("data-rhythm", RHYTHMS[i]);
-      label.textContent = names[RHYTHMS[i]];
-    };
-    var sync = function () {
-      var run = !userPaused && onScreen && !reduceMotion;
-      dance.classList.toggle("is-paused", !run);
-      if (run && !timer) {
-        timer = setInterval(function () { show((idx + 1) % RHYTHMS.length); }, 20000);
-      } else if (!run && timer) {
-        clearInterval(timer);
-        timer = null;
-      }
-    };
-    show(0);
-    toggle.addEventListener("click", function () {
-      userPaused = !userPaused;
-      toggle.setAttribute("aria-pressed", String(userPaused));
-      sync();
-    });
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (entries) {
-        onScreen = entries[0].isIntersecting;
-        sync();
-      }).observe(dance);
-    }
-    sync();
-  }
-
   /* ---------- language: suggest, never redirect ---------- */
   var KEY = "pv-lang-choice";
   function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
@@ -146,13 +107,13 @@
   var LANG_ATTR = { pt: "pt-BR", en: "en", es: "es", zh: "zh-CN" };
   var UI = {
     pt: { walk: "Arraste para andar pelo trajeto", signal: "Sem sinal", appLang: "Idioma do app", demo: "Trajeto e relatos fictícios.",
-      mouse: "Mova o cursor para pegar visão.", touch: "Toque no mapa para pegar visão.", rhythm: "Trocar o ritmo", tools: "Teste o app" },
+      mouse: "Mova o cursor para pegar visão.", touch: "Toque no mapa para pegar visão.", tools: "Teste o app" },
     en: { walk: "Drag to walk along the route", signal: "No signal", appLang: "App language", demo: "Route and reports are fictional.",
-      mouse: "Move your cursor to get the picture.", touch: "Tap the map to get the picture.", rhythm: "Change the rhythm", tools: "Try the app" },
+      mouse: "Move your cursor to get the picture.", touch: "Tap the map to get the picture.", tools: "Try the app" },
     es: { walk: "Arrastra para recorrer el trayecto", signal: "Sin señal", appLang: "Idioma de la app", demo: "Trayecto y reportes ficticios.",
-      mouse: "Mueve el cursor para informarte.", touch: "Toca el mapa para informarte.", rhythm: "Cambiar el ritmo", tools: "Prueba la app" },
+      mouse: "Mueve el cursor para informarte.", touch: "Toca el mapa para informarte.", tools: "Prueba la app" },
     zh: { walk: "拖动以沿路线行走", signal: "没有信号", appLang: "应用语言", demo: "路线和报告均为虚构。",
-      mouse: "移动光标，先了解情况。", touch: "点击地图，先了解情况。", rhythm: "切换节奏", tools: "试用应用" }
+      mouse: "移动光标，先了解情况。", touch: "点击地图，先了解情况。", tools: "试用应用" }
   };
   var ui = UI[pageLang] || UI.pt;
   var pageApp = APP[pageLang] || APP.pt;
@@ -348,28 +309,6 @@
     });
     if (fine) hero.addEventListener("pointerleave", function () { rest(); wake(); });
     window.addEventListener("resize", function () { measure(); rest(); wake(); });
-  })();
-
-  /* ---------- the dancers: pick the rhythm ---------- */
-  (function rhythm() {
-    var dance = document.querySelector(".dance");
-    var label = dance && dance.querySelector("[data-rhythm-name]");
-    if (!label) return;
-    var RHYTHMS = ["samba", "funk", "charme", "pagode", "bossa"];
-    var names = JSON.parse(dance.getAttribute("data-names"));
-    var btn = el("button", "dance-next", label.textContent);
-    btn.type = "button";
-    btn.setAttribute("aria-label", ui.rhythm);
-    btn.addEventListener("click", function () {
-      var next = RHYTHMS[(RHYTHMS.indexOf(dance.getAttribute("data-rhythm")) + 1) % RHYTHMS.length];
-      dance.setAttribute("data-rhythm", next);
-      btn.textContent = names[next];
-    });
-    /* the 20 s rotation keeps writing to `label`, so it stays and mirrors here */
-    label.hidden = true;
-    new MutationObserver(function () { btn.textContent = label.textContent; })
-      .observe(label, { childList: true, characterData: true, subtree: true });
-    label.parentNode.appendChild(btn);
   })();
 
   /* ---------- the map: walk a route, watch the classification change ---------- */
@@ -615,7 +554,7 @@
 
 /* ============================================================
    Rio itself: the hills, a phone you can really tap, a day told by the
-   scroll and the dancers at full size. Built here, so the page is still
+   scroll and the waves of the promenade. Built here, so the page is still
    complete with JS off; reduced motion keeps the static three steps.
    Texts reuse what the page already says, in its own language, whenever
    they can; itinerary and place names come from the app's approved seeds.
@@ -643,32 +582,28 @@
   function txt(sel) { var n = document.querySelector(sel); return n ? n.textContent.trim() : ""; }
 
   var T = {
-    pt: { back: "Voltar", day: "dia", days: "dias", sample: "Exemplos", tap: "Toque nos blocos do celular.", dayTitle: "Um dia no Rio",
-      rhythmH: "O Rio tem ritmo. Escolha um.", pause: "Pausar a dança",
+    pt: { tapIn: "Toque num bloco para abrir", back: "Voltar", day: "dia", days: "dias", sample: "Exemplos", tap: "Toque nos blocos do celular.", dayTitle: "Um dia no Rio",
       perfil: ["Idioma", "Aparência", "Assinatura", "Apagar meus dados"],
       rest: ["Boteco raiz", "Jantar especial", "Pé na areia", "Café forte"],
       ev: ["Roda de samba, sáb 20h", "Feira de rua, dom 10h", "Show na praia, sex 19h"],
       rot: ["Urca e Pão de Açúcar", "Clássicos da Zona Sul", "Primeira vez no Rio"],
       cult: ["Museu de Arte Moderna do Rio de Janeiro", "Cine Odeon", "Teatro Riachuelo"],
       report: "Via bloqueada", gone: "Relato de exemplo: some sozinho", off: "Os dados ficam no aparelho; o mapa precisa de internet." },
-    en: { back: "Back", day: "day", days: "days", sample: "Examples", tap: "Tap the blocks on the phone.", dayTitle: "A day in Rio",
-      rhythmH: "Rio has rhythm. Pick one.", pause: "Pause the dance",
+    en: { tapIn: "Tap a block to open it", back: "Back", day: "day", days: "days", sample: "Examples", tap: "Tap the blocks on the phone.", dayTitle: "A day in Rio",
       perfil: ["Language", "Appearance", "Subscription", "Delete my data"],
       rest: ["Classic boteco", "Special dinner", "By the beach", "Strong coffee"],
       ev: ["Samba circle, Sat 8 pm", "Street fair, Sun 10 am", "Beach concert, Fri 7 pm"],
       rot: ["Urca and Sugarloaf", "South Zone Classics", "First Time in Rio"],
       cult: ["Museum of Modern Art, Rio de Janeiro", "Cine Odeon", "Riachuelo Theatre"],
       report: "Blocked road", gone: "Sample report: clears on its own", off: "Data stays on your device; the map needs internet." },
-    es: { back: "Volver", day: "día", days: "días", sample: "Ejemplos", tap: "Toca los bloques del teléfono.", dayTitle: "Un día en Río",
-      rhythmH: "Río tiene ritmo. Elige uno.", pause: "Pausar el baile",
+    es: { tapIn: "Toca un bloque para abrirlo", back: "Volver", day: "día", days: "días", sample: "Ejemplos", tap: "Toca los bloques del teléfono.", dayTitle: "Un día en Río",
       perfil: ["Idioma", "Apariencia", "Suscripción", "Borrar mis datos"],
       rest: ["Boteco clásico", "Cena especial", "Junto al mar", "Café fuerte"],
       ev: ["Rueda de samba, sáb 20 h", "Feria callejera, dom 10 h", "Show en la playa, vie 19 h"],
       rot: ["Urca y Pan de Azúcar", "Clásicos de la Zona Sur", "Primera vez en Río"],
       cult: ["Museo de Arte Moderno de Río de Janeiro", "Cine Odeon", "Teatro Riachuelo"],
       report: "Vía bloqueada", gone: "Reporte de ejemplo: desaparece solo", off: "Los datos se guardan en el dispositivo; el mapa necesita internet." },
-    zh: { back: "返回", day: "天", days: "天", sample: "示例", tap: "点击手机上的方块。", dayTitle: "里约的一天",
-      rhythmH: "里约自有节奏，选一种吧。", pause: "暂停舞蹈",
+    zh: { tapIn: "点击方块即可打开", back: "返回", day: "天", days: "天", sample: "示例", tap: "点击手机上的方块。", dayTitle: "里约的一天",
       perfil: ["语言", "外观", "订阅", "删除我的数据"],
       rest: ["传统小酒馆", "特别晚餐", "海滩边", "浓咖啡"],
       ev: ["桑巴圈，周六 20:00", "街头市集，周日 10:00", "海滩音乐会，周五 19:00"],
@@ -706,8 +641,6 @@
     var s = hills("hills-hero");
     if (lens) lens.insertBefore(s, lens.querySelector(".lens-full"));
     else h.insertBefore(s, h.firstChild);
-    var note = h.querySelector(".lens-note");
-    if (note) note.textContent += " " + t.tap;
     if (reduce) return;
     h.classList.add("hero-in");
 
@@ -749,6 +682,7 @@
     if (!screen || !tiles) return;
     tiles.removeAttribute("aria-hidden");
     screen.classList.add("ph-screen");
+    screen.insertBefore(el("p", "ph-tap", t.tapIn), tiles.nextSibling);
     var panel = el("div", "ph-panel");
     panel.inert = true;
     var back = el("button", "ph-back", "‹ " + t.back);
@@ -1021,6 +955,41 @@
     render();
   })();
 
+  /* ---------- the promenade's waves: black and white stone, moving with the scroll ---------- */
+  (function waves() {
+    var f = document.querySelector(".band.final");
+    if (!f) return;
+    var band = el("div", "waves");
+    band.setAttribute("aria-hidden", "true");
+    /* two identical periods side by side, so sliding by half loops seamlessly */
+    var W = 1600, H = 200, N = 7, A = 22, P = 400;
+    var s = svg("svg", { viewBox: "0 0 " + W * 2 + " " + H, preserveAspectRatio: "none" }, band);
+    function edge(y0, phase, reverse) {
+      var pts = [];
+      for (var x = 0; x <= W * 2; x += 20) pts.push([x, y0 + A * Math.sin((x / P) * Math.PI * 2 + phase)]);
+      if (reverse) pts.reverse();
+      return pts.map(function (q, i) { return (i ? "L" : "") + q[0] + " " + q[1].toFixed(1); }).join("");
+    }
+    var step = H / (N - 1);
+    for (var k = 0; k < N; k++) {
+      var top = -step / 2 + k * step, bot = top + step;
+      svg("path", { "class": k % 2 ? "wave-dark" : "wave-light", d: "M" + edge(top, 0) + "L" + edge(bot, 0, true).slice(0) + "Z" }, s);
+    }
+    f.parentNode.insertBefore(band, f);
+    if (reduce) return;
+    var ticking = false;
+    function draw() {
+      ticking = false;
+      var r = band.getBoundingClientRect();
+      if (r.bottom < -50 || r.top > window.innerHeight + 50) return;
+      /* walk along the promenade as you scroll: half the svg is one full loop */
+      var shift = (window.scrollY * 0.12) % (band.clientWidth);
+      s.style.transform = "translate3d(" + (-shift).toFixed(1) + "px,0,0)";
+    }
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, { passive: true });
+    draw();
+  })();
+
   /* ---------- the page closes at night, on the same hills ---------- */
   (function closing() {
     var f = document.querySelector(".band.final");
@@ -1051,62 +1020,4 @@
     });
   })();
 
-  /* ---------- the dancers, at full size ---------- */
-  (function band() {
-    var finalBand = document.querySelector(".band.final");
-    var dance = document.querySelector(".hero .dance");
-    if (!finalBand || !dance || reduce) return;
-    var names = JSON.parse(dance.getAttribute("data-names"));
-    var RH = Object.keys(names);
-    var sec = el("section", "band dance-band");
-    var id = "ritmo-h";
-    sec.setAttribute("aria-labelledby", id);
-    var wrap = el("div", "wrap");
-    var h = el("h2", "", t.rhythmH);
-    h.id = id;
-    wrap.appendChild(h);
-    var stageEl = el("div", "dance-wide");
-    stageEl.setAttribute("data-rhythm", "samba");
-    var s = svg("svg", { viewBox: "0 0 960 110", "aria-hidden": "true" }, stageEl);
-    for (var i = 0; i < 12; i++) {
-      var x = 40 + i * 80;
-      var fig = svg("g", { "class": "fig" + (i % 4 === 1 ? " solo" : "") }, s);
-      svg("circle", { cx: x, cy: 16, r: 8 }, fig);
-      svg("line", { x1: x, y1: 24, x2: x, y2: 62 }, fig);
-      [["a-l", 32, 58], ["a-r", 32, 58], ["l-l", 62, 100], ["l-r", 62, 100]].forEach(function (l) {
-        svg("line", { "class": "limb " + l[0], x1: x, y1: l[1], x2: x, y2: l[2] }, fig);
-      });
-    }
-    wrap.appendChild(stageEl);
-    var bar = el("div", "rhythm-bar");
-    var toggle = el("button", "dance-toggle");
-    toggle.type = "button";
-    toggle.setAttribute("aria-pressed", "false");
-    toggle.setAttribute("aria-label", t.pause);
-    toggle.innerHTML = dance.querySelector(".dance-toggle").innerHTML;
-    bar.appendChild(toggle);
-    var btns = RH.map(function (k, i) {
-      var b = el("button", "rhythm-btn", names[k]);
-      b.type = "button";
-      b.setAttribute("aria-pressed", String(i === 0));
-      b.addEventListener("click", function () {
-        stageEl.setAttribute("data-rhythm", k);
-        btns.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
-      });
-      bar.appendChild(b);
-      return b;
-    });
-    wrap.appendChild(bar);
-    sec.appendChild(wrap);
-    finalBand.parentNode.insertBefore(sec, finalBand);
-    var paused = false, on = false;
-    function sync() { stageEl.classList.toggle("is-paused", paused || !on); }
-    toggle.addEventListener("click", function () {
-      paused = !paused;
-      toggle.setAttribute("aria-pressed", String(paused));
-      sync();
-    });
-    new IntersectionObserver(function (e) { on = e[0].isIntersecting; sync(); }).observe(stageEl);
-    sync();
-  })();
 })();

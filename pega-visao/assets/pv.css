@@ -205,42 +205,6 @@ html[lang="zh-CN"] .hero h1 { letter-spacing: 0; line-height: 1.15; }
 .tile svg { width: 24px; height: 24px; color: var(--c); fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
 .tile-main { background: var(--marca); border-color: var(--marca); color: var(--na-marca); }
 .tile-main svg { color: var(--na-marca); }
-.dance { position: relative; padding: 0.4rem 0.75rem 0.7rem; }
-.dance svg { width: 100%; height: auto; }
-.dance-foot { display: flex; align-items: center; justify-content: space-between; color: var(--texto2); }
-.dance-toggle {
-  display: inline-grid; place-items: center; width: 48px; height: 48px; margin-left: -12px;
-  border: 0; border-radius: 12px; background: none; color: var(--texto2); cursor: pointer;
-}
-.dance-toggle svg { width: 18px; height: 18px; fill: currentColor; }
-.dance-toggle .i-play { display: none; }
-.dance-toggle[aria-pressed="true"] .i-play { display: block; }
-.dance-toggle[aria-pressed="true"] .i-pause { display: none; }
-
-/* dancers: one keyframe set, each rhythm only changes the numbers */
-.fig line, .fig circle { fill: none; stroke: var(--silhueta); stroke-width: 3; stroke-linecap: round; }
-.fig.solo line, .fig.solo circle { stroke: var(--solista); stroke-width: 3.6; }
-.fig, .fig .limb { transform-box: fill-box; }
-.fig { transform-origin: 50% 100%; animation: pv-sway var(--dur) ease-in-out infinite alternate; }
-.fig .limb { transform-origin: 50% 0; animation: pv-limb var(--dur) ease-in-out infinite alternate; }
-.fig .a-l { --from: var(--al1); --to: var(--al2); }
-.fig .a-r { --from: var(--ar1); --to: var(--ar2); }
-.fig .l-l { --from: var(--ll); --to: calc(var(--ll) * -0.3); }
-.fig .l-r { --from: calc(var(--ll) * 0.3); --to: calc(var(--ll) * -1); }
-.fig:nth-child(2n) { animation-delay: calc(var(--dur) * -0.5); }
-.fig:nth-child(2n) .limb { animation-delay: calc(var(--dur) * -0.5); }
-.is-paused .fig, .is-paused .fig .limb { animation-play-state: paused; }
-@keyframes pv-sway {
-  from { transform: translateX(calc(var(--slide) * -1)) rotate(calc(var(--sway) * -1)); }
-  to { transform: translateX(var(--slide)) rotate(var(--sway)); }
-}
-@keyframes pv-limb { from { transform: rotate(var(--from)); } to { transform: rotate(var(--to)); } }
-[data-rhythm="samba"]  { --solista: var(--cultural);     --dur: 0.42s; --sway: 7deg; --slide: 1px; --al1: 20deg;  --al2: 55deg;  --ar1: -55deg;  --ar2: -20deg;  --ll: 14deg; }
-[data-rhythm="funk"]   { --solista: var(--eventos);      --dur: 0.5s;  --sway: 10deg; --slide: 0px; --al1: 30deg;  --al2: 40deg;  --ar1: -170deg; --ar2: -110deg; --ll: 10deg; }
-[data-rhythm="charme"] { --solista: var(--roteiros);     --dur: 0.9s;  --sway: 2deg; --slide: 5px; --al1: 60deg;  --al2: 75deg;  --ar1: -75deg;  --ar2: -60deg;  --ll: 8deg; }
-[data-rhythm="pagode"] { --solista: var(--restaurantes); --dur: 0.55s; --sway: 4deg; --slide: 1px; --al1: 15deg;  --al2: 25deg;  --ar1: -70deg;  --ar2: -35deg;  --ll: 6deg; }
-[data-rhythm="bossa"]  { --solista: var(--marca);        --dur: 1.7s;  --sway: 2deg; --slide: 0px; --al1: 8deg;   --al2: 12deg;  --ar1: -12deg;  --ar2: -8deg;   --ll: 2deg; }
-
 /* ---------- sections ---------- */
 .band { padding-block: clamp(3.5rem, 8vw, 6.5rem); border-top: 1px solid var(--divisor); }
 .band-alt { background: var(--sup1); }
@@ -397,7 +361,6 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
   .js .rv { transform: none !important; }
   .btn, .lg { transform: none !important; }
   .fig, .fig .limb { animation: none; }
-  .dance-toggle { display: none; }
 }
 
 @media (forced-colors: active) {
@@ -406,7 +369,7 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
 }
 
 @media print {
-  .topbar, .dance, .lang-hint { display: none; }
+  .topbar, .lang-hint { display: none; }
   .js .rv { opacity: 1; transform: none; }
 }
 
@@ -444,15 +407,6 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
   position: relative; z-index: 1; max-width: 1180px; margin: 2.2rem auto 0;
   padding-inline: clamp(1.25rem, 4vw, 2.5rem); color: var(--texto2); text-shadow: 0 0 10px var(--fundo);
 }
-
-/* dancers: tap to change the rhythm */
-.dance-next {
-  min-height: 48px; padding-inline: 0.6rem; margin-right: -0.6rem; border: 0; border-radius: 12px;
-  background: none; color: var(--texto); font: inherit; font-weight: 700; cursor: pointer;
-  text-decoration: underline; text-decoration-color: var(--contorno); text-underline-offset: 4px;
-  transition: transform 0.16s var(--ease-out);
-}
-.dance-next:active { transform: scale(0.97); transition-duration: 0.1s; }
 
 /* map: route, walker, reports */
 .sim-screen { position: relative; }
@@ -546,7 +500,7 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
 
 @media (prefers-reduced-motion: reduce) {
   .sim-toast { transform: none; }
-  .is-drag .sim-halo, .dance-next:active { transform: none; }
+  .is-drag .sim-halo { transform: none; }
 }
 @media (forced-colors: active) {
   .lens { display: none; }
@@ -556,7 +510,7 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
 @media print { .lens, .lens-note, .sim-walk, .sim-tools, .sim-status, .sim-toast, .sim-banner { display: none; } }
 
 /* ============================================================
-   Rio: hills, tappable phone, the day told by the scroll, big dancers
+   Rio: hills, tappable phone, the day told by the scroll, the waves
    ============================================================ */
 .hills path { stroke: none; }
 .hills-hero { position: absolute; left: 0; right: 0; bottom: 0; top: auto !important; width: 100%; height: min(44%, 340px) !important; }
@@ -689,28 +643,10 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
 .st-hint { color: var(--texto2); font-size: 1rem; }
 .story-phone .sim-banner { z-index: 1; }
 
-/* dancers, wide */
-.dance-band h2 { margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
-.dance-wide svg { width: 100%; height: auto; overflow: visible; }
-.dance-wide .fig line, .dance-wide .fig circle { stroke: var(--contorno); stroke-width: 3; }
-.dance-wide .fig.solo line, .dance-wide .fig.solo circle { stroke: var(--solista); stroke-width: 4; }
-.dance-wide .fig { transition: none; }
-.rhythm-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 1.4rem; }
-.rhythm-bar .dance-toggle { margin-left: 0; color: var(--texto); }
-.rhythm-btn {
-  min-height: 48px; padding-inline: 1rem; border: 1px solid var(--divisor); border-radius: 12px; background: none;
-  color: var(--texto); font: inherit; font-weight: 700; cursor: pointer;
-  transition: transform 0.16s var(--ease-out), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-.rhythm-btn:active { transform: scale(0.97); transition-duration: 0.1s; }
-.rhythm-btn[aria-pressed="true"] { background: var(--marca); border-color: var(--marca); color: var(--na-marca); }
-@media (hover: hover) and (pointer: fine) { .rhythm-btn:hover { border-color: var(--contorno); } }
-
 @media (forced-colors: active) {
   .story-sky, .story-sun, .story-moon, .story-stars, .story-lights, .hills { display: none; }
-  .rhythm-btn[aria-pressed="true"] { outline: 2px solid Highlight; }
 }
-@media print { .story, .dance-band, .hills, .ph-panel { display: none; } #como.has-story .steps-as-story { position: static; width: auto; height: auto; clip-path: none; } }
+@media print { .story, .waves, .hills, .ph-panel { display: none; } #como.has-story .steps-as-story { position: static; width: auto; height: auto; clip-path: none; } }
 
 /* the page closes at night, on the same hills */
 .final-night { position: relative; overflow: clip; isolation: isolate; padding-bottom: clamp(9rem, 22vw, 16rem); background: linear-gradient(var(--fundo), #0D1630); border-top: 0; }
@@ -738,3 +674,13 @@ html[lang="zh-CN"] h2 { letter-spacing: 0; line-height: 1.25; }
   .faq details::details-content { transition: none; }
 }
 @media print { .hills-final, .final-lights { display: none; } .final-night { padding-bottom: 0; background: none; } }
+
+/* hint below the tiles of the hero phone */
+.ph-tap { padding: 0.9rem 0.9rem 1.1rem; color: var(--texto2); font-size: 1rem; text-align: center; }
+
+/* the promenade's waves: always black and white stone, in either theme */
+.waves { position: relative; overflow: hidden; height: clamp(120px, 16vw, 220px); background: #E9E4D8; border-top: 1px solid var(--divisor); }
+.waves svg { position: absolute; top: 0; left: 0; width: 200%; height: 100%; will-change: transform; }
+.wave-light { fill: #E9E4D8; }
+.wave-dark { fill: #121A1D; }
+@media (forced-colors: active) { .waves { display: none; } }
